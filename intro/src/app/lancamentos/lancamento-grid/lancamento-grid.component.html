@@ -1,0 +1,21 @@
+<p-dataTable [value]="lancamentos" [paginator]="true" [rows]="3" [responsive]="true">
+  <p-column field="pessoa" header="Pessoa"></p-column>
+  <p-column field="descricao" header="Descrição"></p-column>
+  <p-column class="col-data" field="dataVencimento" header="Vencimento"></p-column>
+  <p-column class="col-data" field="dataPagamento" header="Pagamento"></p-column>
+  <p-column field="valor" header="Valor" styleClass="col-valor">
+    <ng-template let-lancamento="rowData" pTemplate="body">
+      <span [ngStyle]="{ display: lancamento.tipo === 'DESPESA' ? 'inline' : 'none' }"
+        style="color: red">-</span>
+      <span [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue' }">
+        {{lancamento.valor}}
+      </span>
+    </ng-template>
+  </p-column>
+  <p-column styleClass="col-buttons"> 
+    <ng-template pTemplate="body">
+      <a pButton icon="fas fa-pencil" styleClass="buttons" pTooltip="Editar" tooltipPosition="top"></a>
+      <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+    </ng-template>
+  </p-column>
+</p-dataTable>
