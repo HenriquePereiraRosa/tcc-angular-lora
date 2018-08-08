@@ -11,7 +11,7 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   exibindoNavbar() {
-    return this.router.url !== '/login';
+    return this.router.url !== '/someUrl';
   }
 
 }

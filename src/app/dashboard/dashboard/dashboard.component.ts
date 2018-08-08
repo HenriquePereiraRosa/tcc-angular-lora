@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
   }
 
   configurarGraficoPizza() {
-    this.dashboardService.lancamentosPorCategoria()
+    this.dashboardService.getDataFromMauaServer()
       .then(dados => {
         this.pieChartData = {
           labels: dados.map(dado => dado.categoria.nome),
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   configurarGraficoLinha() {
-    this.dashboardService.lancamentosPorDia()
+    this.dashboardService.getDataFromMauaServer()
       .then(dados => {
         const diasDoMes = this.configurarDiasMes();
         const totaisReceitas = this.totaisPorCadaDiaMes(

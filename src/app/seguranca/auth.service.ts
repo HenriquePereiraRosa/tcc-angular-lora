@@ -12,6 +12,9 @@ export class AuthService {
   oauthTokenUrl: string;
   jwtPayload: any;
 
+  usuario =  'admin@spring.com';
+  senha = 'admin';
+
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService
@@ -21,17 +24,18 @@ export class AuthService {
   }
 
   login(usuario: string, senha: string): Promise<void> {
-    const headers = new HttpHeaders()
-        .append('Content-Type', 'application/x-www-form-urlencoded')
-        .append('Authorization', 'Basic YW5ndWxhcjphbmd1bGFy');
 
-    const body = `username=${usuario}&password=${senha}&grant_type=password`;
+    const promise = new Promise((resolve, reject) => {
+      if (((this.usuario === usuario) && (this.senha === senha))) {
+        resolve('Success!');
+      } else {
+        reject('Usuário ou senha iválidos!');
+      }
+    });
 
-    return this.http.post<any>(this.oauthTokenUrl, body,
-        { headers, withCredentials: true })
-      .toPromise()
-      .then(response => {
-        this.armazenarToken(response.access_token);
+    return promise
+      .then(data => {
+        console.log(data);
       })
       .catch(response => {
         if (response.status === 400) {
