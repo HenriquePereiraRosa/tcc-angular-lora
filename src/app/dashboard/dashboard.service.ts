@@ -10,12 +10,13 @@ import { ApiHttp } from '../seguranca/api-http';
 export class DashboardService {
 
   lancamentosUrl: string;
-
   nodeUrl: string;
+
+  logs: any[];
 
   constructor(private http: ApiHttp) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
-    this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/1/0004a30b001e8b8e';
+    this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/10/0004a30b001e8b8e';
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
@@ -49,12 +50,30 @@ export class DashboardService {
     return this.http.get<Array<any>>(`${this.nodeUrl}`)
       .toPromise()
       .then(response => {
-        const dados = response;
+
+        console.log(response);
+        console.log('Antes da manipulação do payload!');
+
+        let dados = response;
+
+        console.log(dados.forEach);
+
+        for (let data of response) {
+          console.log('In for loop...');
+          console.log(JSON.parse(data));
+          console.log(data.data_payload);
+          this.logs.push(JSON.parse(data.data_payload));
+        }
+        // const dados = response[0].data_payload;
 
         // DEBUG
-        console.log(`DADOS: ${JSON.stringify(dados)}`);
+        // console.log(`DADOS: ${JSON.stringify(dados)}`);
+        console.log(`1) DADOS:`);
+        console.log(dados);
+        console.log(`2) LOG'S:`);
+        console.log(this.logs);
 
-        this.converterStringsParaDatas(dados);
+        // this.converterStringsParaDatas(dados);
 
         return dados;
       });
