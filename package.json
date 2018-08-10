@@ -44,7 +44,7 @@
     "moment": "^2.18.1",
     "ng2-currency-mask": "^4.1.0",
     "ng2-toasty": "^4.0.3",
-    "npm": "^6.2.0",
+    "npm": "^6.3.0",
     "primeicons": "^1.0.0-beta.7",
     "primeng": "^6.0.0-beta.1",
     "protractor": "~5.1.2",

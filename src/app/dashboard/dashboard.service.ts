@@ -12,11 +12,19 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl: string;
 
-  logs: any[];
+  stringAux: String;
+  nodes: Node[];
+  node: Node;
+
+  logs: string[];
 
   constructor(private http: ApiHttp) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
     this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/10/0004a30b001e8b8e';
+    this.logs = [];
+    this.stringAux = '';
+    this.nodes = [];
+    this.node = new Node();
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
@@ -29,12 +37,7 @@ export class DashboardService {
       .toPromise()
       .then(response => {
         const dados = response;
-
-        // DEBUG
-        console.log(`DADOS: ${JSON.stringify(dados)}`);
-
         this.converterStringsParaDatas(dados);
-
         return dados;
       });
   }
@@ -50,19 +53,22 @@ export class DashboardService {
     return this.http.get<Array<any>>(`${this.nodeUrl}`)
       .toPromise()
       .then(response => {
-
         console.log(response);
         console.log('Antes da manipulação do payload!');
 
-        let dados = response;
+        const dados = response.logs;
+        console.log('0) Dados: ');
+        console.log(dados);
 
-        console.log(dados.forEach);
-
-        for (let data of response) {
+        for (const data of dados) {
           console.log('In for loop...');
-          console.log(JSON.parse(data));
+          console.log(data);
           console.log(data.data_payload);
-          this.logs.push(JSON.parse(data.data_payload));
+          this.logs.push(data.data_payload);
+          this.stringAux = JSON.stringify(data.data_payload).substring(0, 3);
+          console.log(this.stringAux);
+          // this.node.current = 0.0;
+          this.nodes.push(this.node);
         }
         // const dados = response[0].data_payload;
 
@@ -75,7 +81,7 @@ export class DashboardService {
 
         // this.converterStringsParaDatas(dados);
 
-        return dados;
+        return this.logs;
       });
   }
 

@@ -60,3 +60,14 @@ export class Lancamento {
   anexo: string;
   urlAnexo: string;
 }
+
+export class Node {
+  name: string;
+  instalation: string;
+  voltage: number;
+  current: number;
+  temperature: number;
+  humidity: number;
+  energy: number;
+  irregularity: boolean;
+}
