@@ -24,7 +24,7 @@ export class DashboardService {
     this.logs = [];
     this.stringAux = '';
     this.nodes = [];
-    this.node = new Node();
+    // this.node = new Node();
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
@@ -56,33 +56,62 @@ export class DashboardService {
         console.log(response);
         console.log('Antes da manipulação do payload!');
 
-        const dados = response.logs;
-        console.log('0) Dados: ');
-        console.log(dados);
+        const dados = response;
 
-        for (const data of dados) {
-          console.log('In for loop...');
-          console.log(data);
-          console.log(data.data_payload);
-          this.logs.push(data.data_payload);
-          this.stringAux = JSON.stringify(data.data_payload).substring(0, 3);
-          console.log(this.stringAux);
-          // this.node.current = 0.0;
-          this.nodes.push(this.node);
-        }
-        // const dados = response[0].data_payload;
+        this.manipulateData(dados);
+        // console.log('0) Dados: ');
+        // console.log(dados);
 
-        // DEBUG
-        // console.log(`DADOS: ${JSON.stringify(dados)}`);
-        console.log(`1) DADOS:`);
-        console.log(dados);
-        console.log(`2) LOG'S:`);
-        console.log(this.logs);
+        // for (const data of dados.logs) {
+        //   console.log('In for loop...');
+        //   console.log(data);
+        //   console.log(data.data_payload);
+        //   this.logs.push(data.data_payload);
+        //   this.stringAux = JSON.stringify(data.data_payload).substring(0, 3);
+        //   console.log(this.stringAux);
+        //   // this.node.current = 0.0;
+        //   this.nodes.push(this.node);
+        // }
+        // // const dados = response[0].data_payload;
 
-        // this.converterStringsParaDatas(dados);
+        // // DEBUG
+        // // console.log(`DADOS: ${JSON.stringify(dados)}`);
+        // console.log(`1) DADOS:`);
+        // console.log(dados);
+        // console.log(`2) LOG'S:`);
+        // console.log(this.logs);
+
+        // // this.converterStringsParaDatas(dados);
 
         return this.logs;
       });
+  }
+
+  manipulateData(data: any): any {
+    const manipulatedData = data.logs;
+
+    console.log('0) Manipulated Data: ');
+    console.log(manipulatedData);
+
+    for (const item of manipulatedData) {
+      console.log('In for loop...');
+      console.log(item);
+      console.log(item.data_payload);
+      this.logs.push(item.data_payload);
+      this.stringAux = JSON.stringify(item.data_payload).substring(0, 3);
+      console.log(this.stringAux);
+      // this.node.current = 0.0;
+      // this.nodes.push(this.node);
+    }
+    // const dados = response[0].data_payload;
+
+    // DEBUG
+    // console.log(`DADOS: ${JSON.stringify(dados)}`);
+    console.log(`1) Manipulated DATA:`);
+    console.log(manipulatedData);
+    console.log(`2) LOG'S:`);
+    console.log(this.logs);
+    return manipulatedData;
   }
 
 
