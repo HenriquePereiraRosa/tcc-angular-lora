@@ -62,12 +62,28 @@ export class Lancamento {
 }
 
 export class Node {
-  name: string;
-  instalation: string;
-  voltage: number;
+  dev_eui: string;
+  vBat: number;
   current: number;
   temperature: number;
   humidity: number;
-  energy: number;
+  power: number;
   irregularity: boolean;
+
+  constructor(
+    dev_eui: string,
+    vBat: number,
+    current: number,
+    temperature: number,
+    humidity: number,
+    power: number,
+    irregularity: boolean) {
+      this.dev_eui = dev_eui;
+      this.vBat = vBat;
+      this.current = current;
+      this.temperature = temperature;
+      this.humidity = humidity;
+      this.power = power;
+      this.irregularity = irregularity;
+    }
 }

@@ -12,7 +12,6 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl: string;
 
-  // stringAux: String;
   nodes: Node[];
   node: Node;
 
@@ -22,9 +21,7 @@ export class DashboardService {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
     this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/10/0004a30b001e8b8e';
     this.logs = [];
-    // this.stringAux = '';
     this.nodes = [];
-    // this.node = new Node();
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
@@ -91,7 +88,7 @@ export class DashboardService {
     let current = 0;
     let temperature = 0;
     let humidity = 0;
-    let VBat = 0;
+    let vBat = 0;
     const manipulatedData = data.logs;
 
     console.log('0) Manipulated Data: ');
@@ -102,17 +99,34 @@ export class DashboardService {
       console.log(item);
       console.log(item.data_payload);
       this.logs.push(item.data_payload);
-      let stringAux = item.data_payload.substring(3, 7);
-      console.log(stringAux);
+      let stringAux = item.data_payload.substring(2, 6);
       current = parseInt(stringAux, 16);
-      console.log('Corrente:');
+      current -= 102;
+      current = (current / (0.066 / (3.3 / 1024)));
+      console.log('Current:');
+      console.log(stringAux);
       console.log(current);
 
-      stringAux = item.data_payload.substring(9, 13);
+      stringAux = item.data_payload.substring(8, 12);
       temperature = parseInt(stringAux, 16) / 10;
       console.log('Temperature:');
+      console.log(stringAux);
       console.log(temperature);
 
+      stringAux = item.data_payload.substring(14, 18);
+      humidity = parseInt(stringAux, 16) / 10;
+      console.log('Humidity:');
+      console.log(stringAux);
+      console.log(humidity);
+
+      stringAux = item.data_payload.substring(20, 24);
+      vBat = parseInt(stringAux, 16) / 1000;
+      console.log('Battery Voltage:');
+      console.log(stringAux);
+      console.log(vBat);
+
+      this.node = new Node(
+        item.dev_eui);
     }
     // const dados = response[0].data_payload;
 
