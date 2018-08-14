@@ -12,7 +12,7 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl: string;
 
-  stringAux: String;
+  // stringAux: String;
   nodes: Node[];
   node: Node;
 
@@ -22,7 +22,7 @@ export class DashboardService {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
     this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/10/0004a30b001e8b8e';
     this.logs = [];
-    this.stringAux = '';
+    // this.stringAux = '';
     this.nodes = [];
     // this.node = new Node();
   }
@@ -88,6 +88,10 @@ export class DashboardService {
   }
 
   manipulateData(data: any): any {
+    let current = 0;
+    let temperature = 0;
+    let humidity = 0;
+    let VBat = 0;
     const manipulatedData = data.logs;
 
     console.log('0) Manipulated Data: ');
@@ -98,10 +102,17 @@ export class DashboardService {
       console.log(item);
       console.log(item.data_payload);
       this.logs.push(item.data_payload);
-      this.stringAux = JSON.stringify(item.data_payload).substring(0, 3);
-      console.log(this.stringAux);
-      // this.node.current = 0.0;
-      // this.nodes.push(this.node);
+      let stringAux = item.data_payload.substring(3, 7);
+      console.log(stringAux);
+      current = parseInt(stringAux, 16);
+      console.log('Corrente:');
+      console.log(current);
+
+      stringAux = item.data_payload.substring(9, 13);
+      temperature = parseInt(stringAux, 16) / 10;
+      console.log('Temperature:');
+      console.log(temperature);
+
     }
     // const dados = response[0].data_payload;
 
