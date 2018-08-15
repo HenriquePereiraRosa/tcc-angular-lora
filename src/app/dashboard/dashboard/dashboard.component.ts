@@ -48,12 +48,12 @@ export class DashboardComponent implements OnInit {
         this.sensor = dados[dados.length - 1];
 
         this.pieChartData = {
-          labels: dados.map(dado => dado.temperature),
+          labels: dados.map(dado => dado.current),
           datasets: [
             {
-              data: dados.map(dado => dado.temperature),
+              data: dados.map(dado => dado.current),
               backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
-                                  '#DD4477', '#3366CC', '#DC3912']
+              '#DD4477', '#3366CC', '#DC3912', '#DD4477', '#3366CC', '#DC3912']
             }
           ]
         };
