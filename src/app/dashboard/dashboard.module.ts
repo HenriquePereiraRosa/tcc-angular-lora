@@ -3,6 +3,7 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 
 import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
 
 import { SharedModule } from './../shared/shared.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -14,6 +15,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
     PanelModule,
     ChartModule,
+    CardModule,
 
     SharedModule,
     DashboardRoutingModule

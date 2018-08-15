@@ -61,7 +61,7 @@ export class Lancamento {
   urlAnexo: string;
 }
 
-export class Node {
+export class Sensor {
   dev_eui: string;
   vBat: number;
   current: number;

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 import { DashboardService } from './../dashboard.service';
+import { getCurrentQueries } from '@angular/core/src/render3/instructions';
+
+import { Sensor } from '../../core/model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +15,8 @@ export class DashboardComponent implements OnInit {
 
   pieChartData: any;
   lineChartData: any;
+
+  sensor: Sensor;
 
   options = {
     tooltips: {
@@ -33,44 +38,53 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.configurarGraficoPizza();
-    // this.configurarGraficoLinha();
+    this.configurarGraficoLinha();
   }
 
   configurarGraficoPizza() {
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
-        // this.pieChartData = {
-        //   labels: dados.map(dado => dado.categoria.nome),
-        //   datasets: [
-        //     {
-        //       data: dados.map(dado => dado.total),
-        //       backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
-        //                           '#DD4477', '#3366CC', '#DC3912']
-        //     }
-        //   ]
-        // };
+
+        this.sensor = dados[dados.length - 1];
+
+        this.pieChartData = {
+          labels: dados.map(dado => dado.temperature),
+          datasets: [
+            {
+              data: dados.map(dado => dado.temperature),
+              backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
+                                  '#DD4477', '#3366CC', '#DC3912']
+            }
+          ]
+        };
       });
   }
 
   configurarGraficoLinha() {
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
-        const diasDoMes = this.configurarDiasMes();
-        const totaisReceitas = this.totaisPorCadaDiaMes(
-          dados.filter(dado => dado.tipo === 'RECEITA'), diasDoMes);
-        const totaisDespesas = this.totaisPorCadaDiaMes(
-          dados.filter(dado => dado.tipo === 'DESPESA'), diasDoMes);
+        const horas = dados.length; // diasDoMes = this.configurarDiasMes();
+        // const totaisReceitas = this.totaisPorCadaDiaMes(
+        //   dados.filter(dado => dado.tipo === 'RECEITA'), diasDoMes);
+        // const totaisDespesas = this.totaisPorCadaDiaMes(
+        //   dados.filter(dado => dado.tipo === 'DESPESA'), diasDoMes);
+
+        console.log('Dados configurarGraficoLinha:')
+        console.log(dados);
+
+        const correntes = this.getCurrents(dados);
+        const temperatures = this.getTemperatures(dados);
 
         this.lineChartData = {
-          labels: diasDoMes,
+          labels: horas,
           datasets: [
             {
-              label: 'Receitas',
-              data: totaisReceitas,
+              label: 'Corrente',
+              data: correntes,
               borderColor: '#3366CC'
             }, {
-              label: 'Despesas',
-              data: totaisDespesas,
+              label: 'Temperatura',
+              data: temperatures,
               borderColor: '#D62B00'
             }
           ]
@@ -110,5 +124,24 @@ export class DashboardComponent implements OnInit {
     }
 
     return dias;
+  }
+
+
+  private getCurrents(dados) {
+    const yAxis: number[] = [];
+    for (const item of dados) {
+      yAxis.push(item.current);
+    }
+
+    return yAxis;
+  }
+
+  private getTemperatures(dados) {
+    const yAxis: number[] = [];
+    for (const item of dados) {
+      yAxis.push(item.temperature);
+    }
+
+    return yAxis;
   }
 }
