@@ -1,11 +1,20 @@
 body {
     background-color: darkslategrey;
+    text-decoration-color: lightgray;
+}
+
+h1 {
+    text-decoration-color: lightgray;
 }
 
 .container {
     background-color: rgb(43, 44, 44);
 }
 
-h1 {
+#title {
     text-decoration-color: lightgray;
+}
+
+.ui-card .ui-card-content {
+    background-color: gray;
 }

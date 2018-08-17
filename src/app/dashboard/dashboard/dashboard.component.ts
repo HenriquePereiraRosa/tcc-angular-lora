@@ -41,7 +41,11 @@ export class DashboardComponent implements OnInit {
     this.configurarGraficoLinha();
   }
 
+
   configurarGraficoPizza() {
+
+    // DEBUG
+    console.log('GRAFICO PIZZA');
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
 
@@ -61,6 +65,8 @@ export class DashboardComponent implements OnInit {
   }
 
   configurarGraficoLinha() {
+    // DEBUG
+    console.log('GRAFICO LINHA');
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
         const horas = dados.length; // diasDoMes = this.configurarDiasMes();
@@ -73,7 +79,12 @@ export class DashboardComponent implements OnInit {
         console.log(dados);
 
         const correntes = this.getCurrents(dados);
+        console.log('CORRENTES: ');
+        console.log(correntes);
+
         const temperatures = this.getTemperatures(dados);
+        console.log('TEMPERATURAS');
+        console.log(temperatures);
 
         this.lineChartData = {
           labels: horas,
@@ -127,8 +138,8 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  private getCurrents(dados) {
-    const yAxis: number[] = [];
+  private getCurrents(dados): any[] {
+    const yAxis: any[] = [];
     for (const item of dados) {
       yAxis.push(item.current);
     }
@@ -136,8 +147,8 @@ export class DashboardComponent implements OnInit {
     return yAxis;
   }
 
-  private getTemperatures(dados) {
-    const yAxis: number[] = [];
+  private getTemperatures(dados): any[] {
+    const yAxis: any[] = [];
     for (const item of dados) {
       yAxis.push(item.temperature);
     }
