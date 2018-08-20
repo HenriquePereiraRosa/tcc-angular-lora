@@ -1,4 +1,4 @@
-body {
+/*body {
     background-color: darkslategrey;
     text-decoration-color: lightgray;
 }
@@ -11,10 +11,10 @@ h1 {
     background-color: rgb(43, 44, 44);
 }
 
-#title {
+.title {
     text-decoration-color: lightgray;
 }
 
 .ui-card .ui-card-content {
     background-color: gray;
-}
+}*/

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
-      <h1 id="title">Dashboard - AR CONDICIONADO</h1>
+      <h1 class="title">Dashboard - AR CONDICIONADO</h1>
     </div>
 
     <div class="ui-g-12 ui-md-12 card">
@@ -26,10 +26,11 @@
     </div>
 
     <div class="ui-g-4 ui-md-4">
-        <p-card [(ngModel)]="sensor">
+        <p-card>
             <div>Status: </div>
             <br>
-            <div *ngIf="!sensor.irregularity; then true_content else false_content"></div>   
+            <div [(ngModel)]="sensor.irregularity"
+            *ngIf="!sensor.irregularity; then true_content else false_content"></div>   
             <ng-template #true_content>NORMAL</ng-template>
             <ng-template #false_content>ANOMALIA DETECTADA!</ng-template>
         </p-card>
@@ -45,7 +46,7 @@
 
     <div class="ui-g-12 ui-md-6">
       <p-panel header="Temperatura">
-        <p-chart type="doughnut" [data]="pieChartData" [options]="options"></p-chart>
+        <p-chart type="bar" [data]="pieChartData" [options]="options"></p-chart>
       </p-panel>
     </div>
 

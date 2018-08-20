@@ -37,8 +37,8 @@ export class DashboardComponent implements OnInit {
     private decimalPipe: DecimalPipe) { }
 
   ngOnInit() {
-    this.configurarGraficoPizza();
     this.configurarGraficoLinha();
+    this.configurarGraficoPizza();
   }
 
 
@@ -49,18 +49,21 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
 
+        const horas = dados.length;
         this.sensor = dados[dados.length - 1];
 
+        const temperaturas = this.getTemperatures(dados);
+
         this.pieChartData = {
-          labels: dados.map(dado => dado.current),
-          datasets: [
-            {
-              data: dados.map(dado => dado.current),
-              backgroundColor: ['#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
-              '#DD4477', '#3366CC', '#DC3912', '#DD4477', '#3366CC', '#DC3912']
-            }
-          ]
-        };
+          labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
+            datasets: [
+              {
+                label: 'Temperaturas',
+                backgroundColor: '#42A5F5',
+                borderColor: '#1E88E5',
+                data: temperaturas
+              }]
+        }
       });
   }
 
@@ -82,22 +85,25 @@ export class DashboardComponent implements OnInit {
         console.log('CORRENTES: ');
         console.log(correntes);
 
-        const temperatures = this.getTemperatures(dados);
+        const temperaturas = this.getTemperatures(dados);
         console.log('TEMPERATURAS');
-        console.log(temperatures);
+        console.log(temperaturas);
 
         this.lineChartData = {
-          labels: horas,
+          labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
           datasets: [
-            {
-              label: 'Corrente',
-              data: correntes,
-              borderColor: '#3366CC'
-            }, {
-              label: 'Temperatura',
-              data: temperatures,
-              borderColor: '#D62B00'
-            }
+              {
+                  label: 'Correntes',
+                  data: correntes,
+                  fill: true,
+                  borderColor: '#4bc0c0'
+              },
+              // {
+              //     label: 'Temperaturas',
+              //     data: temperaturas,
+              //     fill: true,
+              //     borderColor: '#565656'
+              // }
           ]
         }
       });
