@@ -71,7 +71,7 @@ export class Sensor {
   humidity: number;
   power: number;
   irregularity: boolean;
-  date: Date;
+  date: string;
 
   constructor(
     dev_eui: string,
@@ -82,7 +82,7 @@ export class Sensor {
     humidity: number,
     power: number,
     irregularity: boolean,
-    date: Date) {
+    date: string) {
       this.dev_eui = dev_eui;
       this.vBat = vBat;
       this.current = current;

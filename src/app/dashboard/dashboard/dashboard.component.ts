@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
         const temperaturas = this.getDeltaTemps(dados);
 
         this.pieChartData = {
-          labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
+          labels: horas, // ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
             datasets: [
               {
                 label: 'Temperaturas',
@@ -73,7 +73,6 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
         const horas = this.getHours(dados);
-        console.log(horas);
         // diasDoMes = this.configurarDiasMes();
         // const totaisReceitas = this.totaisPorCadaDiaMes(
         //   dados.filter(dado => dado.tipo === 'RECEITA'), diasDoMes);
@@ -86,7 +85,7 @@ export class DashboardComponent implements OnInit {
         const deltaTemperaturas = this.getDeltaTemps(dados);
 
         this.lineChartData = {
-          labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
+          labels: horas, // ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
           datasets: [
               {
                   label: 'Correntes',
@@ -161,8 +160,7 @@ export class DashboardComponent implements OnInit {
   private getHours(dados) {
     const hours: string[] = [];
     for (const item of dados) {
-      hours.push('item.date.hours:item.date.minute:item.date.second');
-      console.log(item.prototype.getHours);
+      hours.push(item.date.substr(11, 8));
     }
     return hours;
   }
