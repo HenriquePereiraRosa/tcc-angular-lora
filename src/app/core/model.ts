@@ -88,6 +88,7 @@ export class Sensor {
       this.current = current;
       this.temperature = temperature;
       this.envoironmentTemp = envoironmentTemp;
+      this.deltaTemperature = envoironmentTemp - temperature;
       this.humidity = humidity;
       this.power = power;
       this.irregularity = irregularity;

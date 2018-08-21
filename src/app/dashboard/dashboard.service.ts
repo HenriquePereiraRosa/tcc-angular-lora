@@ -60,6 +60,7 @@ export class DashboardService {
     let temperature = 0;
     let humidity = 0;
     let vBat = 0;
+    let date = new Date();
     const dataAux = data.logs;
 
     for (const item of dataAux) {
@@ -77,6 +78,8 @@ export class DashboardService {
       stringAux = item.data_payload.substring(20, 24);
       vBat = parseInt(stringAux, 16) / 1000;
 
+      date = item.created_at;
+
       const power = current * 220;
 
        let irregularity = false;
@@ -85,8 +88,8 @@ export class DashboardService {
       }
 
       this.sensor = new Sensor(
-        item.dev_eui, vBat, current, temperature,
-        humidity, power, irregularity);
+        item.dev_eui, vBat, current, temperature, 25,
+        humidity, power, irregularity, date);
 
       this.sensors.push(this.sensor);
     }

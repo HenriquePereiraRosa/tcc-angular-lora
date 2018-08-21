@@ -49,10 +49,10 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
 
-        const horas = dados.length;
+        const horas = this.getHours(dados);
         this.sensor = dados[dados.length - 1];
 
-        const temperaturas = this.getTemperatures(dados);
+        const temperaturas = this.getDeltaTemps(dados);
 
         this.pieChartData = {
           labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
@@ -67,27 +67,23 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  configurarGraficoLinha() {
+  private configurarGraficoLinha() {
     // DEBUG
     console.log('GRAFICO LINHA');
     this.dashboardService.getDataFromMauaServer()
       .then(dados => {
-        const horas = dados.length; // diasDoMes = this.configurarDiasMes();
+        const horas = this.getHours(dados);
+        console.log(horas);
+        // diasDoMes = this.configurarDiasMes();
         // const totaisReceitas = this.totaisPorCadaDiaMes(
         //   dados.filter(dado => dado.tipo === 'RECEITA'), diasDoMes);
         // const totaisDespesas = this.totaisPorCadaDiaMes(
         //   dados.filter(dado => dado.tipo === 'DESPESA'), diasDoMes);
 
-        console.log('Dados configurarGraficoLinha:')
-        console.log(dados);
 
         const correntes = this.getCurrents(dados);
-        console.log('CORRENTES: ');
-        console.log(correntes);
 
-        const temperaturas = this.getTemperatures(dados);
-        console.log('TEMPERATURAS');
-        console.log(temperaturas);
+        const deltaTemperaturas = this.getDeltaTemps(dados);
 
         this.lineChartData = {
           labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
@@ -153,12 +149,21 @@ export class DashboardComponent implements OnInit {
     return yAxis;
   }
 
-  private getTemperatures(dados): any[] {
+  private getDeltaTemps(dados): any[] {
     const yAxis: any[] = [];
     for (const item of dados) {
-      yAxis.push(item.temperature);
+      yAxis.push(item.deltaTemperature);
     }
 
     return yAxis;
+  }
+
+  private getHours(dados) {
+    const hours: string[] = [];
+    for (const item of dados) {
+      hours.push('item.date.hours:item.date.minute:item.date.second');
+      console.log(item.prototype.getHours);
+    }
+    return hours;
   }
 }
