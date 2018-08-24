@@ -70,7 +70,7 @@ export class Sensor {
   envoironmentTemp: number;
   humidity: number;
   power: number;
-  irregularity: boolean;
+  anomaly: boolean;
   date: string;
 
   constructor(
@@ -81,7 +81,7 @@ export class Sensor {
     envoironmentTemp: number,
     humidity: number,
     power: number,
-    irregularity: boolean,
+    anomaly: boolean,
     date: string) {
       this.dev_eui = dev_eui;
       this.vBat = vBat;
@@ -91,7 +91,7 @@ export class Sensor {
       this.deltaTemperature = envoironmentTemp - temperature;
       this.humidity = humidity;
       this.power = power;
-      this.irregularity = irregularity;
+      this.anomaly = anomaly;
       this.date = date;
     }
 }

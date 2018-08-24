@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
   lineChartData: any;
 
   sensor: Sensor;
+  data: any[];
 
   options = {
     tooltips: {
@@ -37,114 +38,61 @@ export class DashboardComponent implements OnInit {
     private decimalPipe: DecimalPipe) { }
 
   ngOnInit() {
-    this.configurarGraficoLinha();
-    this.configurarGraficoPizza();
-  }
-
-
-  configurarGraficoPizza() {
-
-    // DEBUG
-    console.log('GRAFICO PIZZA');
     this.dashboardService.getDataFromMauaServer()
-      .then(dados => {
-
-        const horas = this.getHours(dados);
-        this.sensor = dados[dados.length - 1];
-
-        const temperaturas = this.getDeltaTemps(dados);
-
-        this.pieChartData = {
-          labels: horas, // ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
-            datasets: [
-              {
-                label: 'Temperaturas',
-                backgroundColor: '#42A5F5',
-                borderColor: '#1E88E5',
-                data: temperaturas
-              }]
-        }
+      .then(response => {
+        this.configurarGraficoLinha(response);
+        this.configurarGraficoPizza(response);
       });
   }
 
-  private configurarGraficoLinha() {
-    // DEBUG
-    console.log('GRAFICO LINHA');
-    this.dashboardService.getDataFromMauaServer()
-      .then(dados => {
-        const horas = this.getHours(dados);
-        // diasDoMes = this.configurarDiasMes();
-        // const totaisReceitas = this.totaisPorCadaDiaMes(
-        //   dados.filter(dado => dado.tipo === 'RECEITA'), diasDoMes);
-        // const totaisDespesas = this.totaisPorCadaDiaMes(
-        //   dados.filter(dado => dado.tipo === 'DESPESA'), diasDoMes);
 
+  configurarGraficoPizza(dados) {
 
-        const correntes = this.getCurrents(dados);
+    const horas = this.getHours(dados);
+    this.sensor = dados[dados.length - 1];
+    const temperaturas = this.getDeltaTemps(dados);
 
-        const deltaTemperaturas = this.getDeltaTemps(dados);
-
-        this.lineChartData = {
-          labels: horas, // ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h'],
-          datasets: [
-              {
-                  label: 'Correntes',
-                  data: correntes,
-                  fill: true,
-                  borderColor: '#4bc0c0'
-              },
-              // {
-              //     label: 'Temperaturas',
-              //     data: temperaturas,
-              //     fill: true,
-              //     borderColor: '#565656'
-              // }
-          ]
-        }
-      });
-  }
-
-  private totaisPorCadaDiaMes(dados, diasDoMes) {
-    const totais: number[] = [];
-    for (const dia of diasDoMes) {
-      let total = 0;
-
-      for (const dado of dados) {
-        if (dado.dia.getDate() === dia) {
-          total = dado.total;
-
-          break;
-        }
-      }
-
-      totais.push(total);
+    this.pieChartData = {
+      labels: horas,
+        datasets: [
+          {
+            label: 'Temperaturas',
+            backgroundColor: '#42A5F5',
+            borderColor: '#1E88E5',
+            data: temperaturas
+          }]
     }
-
-    return totais;
   }
 
-  private configurarDiasMes() {
-    // const mesReferencia = new Date();
-    // mesReferencia.setMonth(mesReferencia.getMonth() + 1);
-    // mesReferencia.setDate(0);
+  private configurarGraficoLinha(dados) {
 
-    const quantidade = 31;
-    const dias: number[] = [];
+    const horas = this.getHours(dados);
+    const correntes = this.getCurrents(dados);
 
-    for (let i = 1; i <= quantidade; i++) {
-      dias.push(i);
+    this.lineChartData = {
+      labels: horas,
+      datasets: [
+          {
+              label: 'Correntes',
+              data: correntes,
+              fill: true,
+              borderColor: '#4bc0c0'
+          },
+          // {
+          //     label: 'Temperaturas',
+          //     data: temperaturas,
+          //     fill: true,
+          //     borderColor: '#565656'
+          // }
+      ]
     }
-
-    return dias;
   }
-
 
   private getCurrents(dados): any[] {
     const yAxis: any[] = [];
     for (const item of dados) {
       yAxis.push(item.current);
     }
-
     return yAxis;
   }
 
@@ -153,7 +101,6 @@ export class DashboardComponent implements OnInit {
     for (const item of dados) {
       yAxis.push(item.deltaTemperature);
     }
-
     return yAxis;
   }
 
@@ -163,5 +110,9 @@ export class DashboardComponent implements OnInit {
       hours.push(item.date.substr(11, 8));
     }
     return hours;
+  }
+
+  getAnomaly(): boolean {
+    return this.sensor.anomaly;
   }
 }
