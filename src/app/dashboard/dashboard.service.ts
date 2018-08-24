@@ -80,8 +80,8 @@ export class DashboardService {
         }
 
         console.log(`Sensors:`);
-        console.log(this.sensors);
-        return this.sensors;
+        console.log(this.sensors.reverse);
+        return this.sensors.reverse;
       });
   }
 
