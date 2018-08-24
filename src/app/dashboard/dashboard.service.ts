@@ -40,7 +40,7 @@ export class DashboardService {
       .toPromise()
       .then(responseArray => {
         const dataAux = responseArray;
-
+        let consumption = 0;
         let current = 0;
         let temperature = 0;
         const environmentTemp = this.handleEnvironmentTemp(response);
@@ -67,6 +67,10 @@ export class DashboardService {
           date = item.created_at;
 
           const power = current * 220;
+          const deltaTemp = environmentTemp - temperature;
+          if (deltaTemp) {
+            consumption = power / (deltaTemp);
+          }
 
           let irregularity = false;
           if (current > 5) {
@@ -74,14 +78,16 @@ export class DashboardService {
           }
 
           this.sensor = new Sensor(
-            item.dev_eui, vBat, current, temperature, environmentTemp,
-            humidity, power, irregularity, date);
+            item.dev_eui, vBat, current, temperature, deltaTemp,
+            humidity, consumption, irregularity, date);
           this.sensors.push(this.sensor);
         }
 
+        this.sensors = this.sensors.reverse();
+
         console.log(`Sensors:`);
-        console.log(this.sensors.reverse);
-        return this.sensors.reverse;
+        console.log(this.sensors);
+        return this.sensors;
       });
   }
 

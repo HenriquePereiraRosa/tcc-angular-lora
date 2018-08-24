@@ -13,7 +13,7 @@ import { Sensor } from '../../core/model';
 })
 export class DashboardComponent implements OnInit {
 
-  pieChartData: any;
+  barChartData: any;
   lineChartData: any;
 
   sensor: Sensor;
@@ -50,16 +50,23 @@ export class DashboardComponent implements OnInit {
 
     const horas = this.getHours(dados);
     this.sensor = dados[dados.length - 1];
-    const temperaturas = this.getDeltaTemps(dados);
+    const deltaTemps = this.getDeltaTemps(dados);
+    // const consumptions = this.getConsumptions(dados);
 
-    this.pieChartData = {
+    this.barChartData = {
       labels: horas,
         datasets: [
           {
-            label: 'Temperaturas',
+            label: 'Diferencial de Temperaturas',
             backgroundColor: '#42A5F5',
             borderColor: '#1E88E5',
-            data: temperaturas
+            data: deltaTemps
+          // },
+          // {
+          //   label: 'Consumo de Energia / Delta Temperatura [W/°C]',
+          //   backgroundColor: '#42A5F5',
+          //   borderColor: '#1E88E5',
+          //   data: consumptions
           }]
     }
   }
@@ -68,6 +75,7 @@ export class DashboardComponent implements OnInit {
 
     const horas = this.getHours(dados);
     const correntes = this.getCurrents(dados);
+    const consumptions = this.getConsumptions(dados);
 
     this.lineChartData = {
       labels: horas,
@@ -78,12 +86,12 @@ export class DashboardComponent implements OnInit {
               fill: true,
               borderColor: '#4bc0c0'
           },
-          // {
-          //     label: 'Temperaturas',
-          //     data: temperaturas,
-          //     fill: true,
-          //     borderColor: '#565656'
-          // }
+          {
+              label: 'Consumo [W/°C]',
+              data: consumptions,
+              fill: true,
+              borderColor: '#565656'
+          }
       ]
     }
   }
@@ -99,10 +107,18 @@ export class DashboardComponent implements OnInit {
   private getDeltaTemps(dados): any[] {
     const yAxis: any[] = [];
     for (const item of dados) {
-      yAxis.push(item.deltaTemperature);
+      yAxis.push(item.deltaTemp);
     }
     return yAxis;
   }
+
+  private getConsumptions(dados): any[] {
+    const yAxis: any[] = [];
+    for (const item of dados) {
+      yAxis.push(item.consumption);
+    }
+    return yAxis;
+}
 
   private getHours(dados) {
     const hours: string[] = [];
@@ -112,7 +128,8 @@ export class DashboardComponent implements OnInit {
     return hours;
   }
 
-  getAnomaly(): boolean {
+  public getAnomaly(): boolean {
+    console.log(this.sensor.anomaly);
     return this.sensor.anomaly;
   }
 }

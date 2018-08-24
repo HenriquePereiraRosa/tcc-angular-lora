@@ -66,10 +66,9 @@ export class Sensor {
   vBat: number;
   current: number;
   temperature: number;
-  deltaTemperature: number;
-  envoironmentTemp: number;
+  deltaTemp: number;
   humidity: number;
-  power: number;
+  consumption: number;
   anomaly: boolean;
   date: string;
 
@@ -78,19 +77,18 @@ export class Sensor {
     vBat: number,
     current: number,
     temperature: number,
-    envoironmentTemp: number,
+    deltaTemp: number,
     humidity: number,
-    power: number,
+    consumption: number,
     anomaly: boolean,
     date: string) {
       this.dev_eui = dev_eui;
       this.vBat = vBat;
       this.current = current;
       this.temperature = temperature;
-      this.envoironmentTemp = envoironmentTemp;
-      this.deltaTemperature = envoironmentTemp - temperature;
+      this.deltaTemp = deltaTemp;
       this.humidity = humidity;
-      this.power = power;
+      this.consumption = consumption;
       this.anomaly = anomaly;
       this.date = date;
     }
