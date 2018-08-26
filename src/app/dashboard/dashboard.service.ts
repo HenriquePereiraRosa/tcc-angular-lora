@@ -69,7 +69,7 @@ export class DashboardService {
           const power = current * 220;
           const deltaTemp = environmentTemp - temperature;
           if (deltaTemp) {
-            consumption = power / (deltaTemp);
+            consumption = power / (Math.abs(deltaTemp));
           }
 
           let irregularity = false;
