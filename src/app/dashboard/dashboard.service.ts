@@ -25,8 +25,8 @@ export class DashboardService {
   }
 
 
-  getDataFromMauaServer(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${this.environmentTempURL}`)
+  getDataFromMauaServer(): Promise<any> {
+    return this.http.get<any>(`${this.environmentTempURL}`)
       .toPromise()
       .then(response => {
         const dados = response;
@@ -36,7 +36,7 @@ export class DashboardService {
 
 
   handleData(response): any {
-    return this.http.get<Array<any>>(`${this.nodeUrl}`)
+    return this.http.get<any>(`${this.nodeUrl}`)
       .toPromise()
       .then(responseArray => {
         const dataAux = responseArray;
