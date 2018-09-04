@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
       .then(response => {
         this.configurarGraficoLinha(response);
         this.configurarGraficoPizza(response);
-      });, interval);
+      }), interval);
   }
 
 
