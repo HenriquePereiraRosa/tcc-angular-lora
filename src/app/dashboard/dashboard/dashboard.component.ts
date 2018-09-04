@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   barChartData: any;
   lineChartData: any;
 
+  const interval = 10000;
+
   sensor: Sensor;
   data: any[];
 
@@ -35,14 +37,15 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private decimalPipe: DecimalPipe) { }
+    private decimalPipe: DecimalPipe) {
+    }
 
   ngOnInit() {
-    this.dashboardService.getDataFromMauaServer()
+    setInterval(this.dashboardService.getDataFromMauaServer()
       .then(response => {
         this.configurarGraficoLinha(response);
         this.configurarGraficoPizza(response);
-      });
+      });, 5000);
   }
 
 
