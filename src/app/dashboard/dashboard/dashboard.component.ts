@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
 
   barChartData: any;
   lineChartData: any;
-  data =any;
+  data = any[];
 
   interval = 50000;
   sensor: Sensor;
