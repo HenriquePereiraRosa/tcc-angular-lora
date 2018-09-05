@@ -16,10 +16,9 @@ export class DashboardComponent implements OnInit {
   barChartData: any;
   lineChartData: any;
 
-  const interval = 10000;
+  interval = 50000;
 
   sensor: Sensor;
-  data: any[];
 
   options = {
     tooltips: {
@@ -41,21 +40,22 @@ export class DashboardComponent implements OnInit {
     }
 
   ngOnInit() {
-    setInterval(this.dashboardService.getDataFromMauaServer()
+    setInterval(() => this.dashboardService.getDataFromMauaServer()
       .then(response => {
         this.configurarGraficoLinha(response);
         this.configurarGraficoPizza(response);
-      }), interval);
+      }), this.interval);
   }
 
 
-  configurarGraficoPizza(dados) {
+  configurarGraficoPizza(data) {
 
-    const horas = this.getHours(dados);
-    this.sensor = dados[dados.length - 1];
-    const deltaTemps = this.getDeltaTemps(dados);
+    const horas = this.getHours(data);
+    this.sensor = data[data.length - 1];
+    const deltaTemps = this.getDeltaTemps(data);
     // const consumptions = this.getConsumptions(dados);
 
+    this.barChartData = 0;
     this.barChartData = {
       labels: horas,
         datasets: [
@@ -74,12 +74,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private configurarGraficoLinha(dados) {
+  private configurarGraficoLinha(data) {
 
-    const horas = this.getHours(dados);
-    const correntes = this.getCurrents(dados);
-    const consumptions = this.getConsumptions(dados);
+    const horas = this.getHours(data);
+    const correntes = this.getCurrents(data);
+    const consumptions = this.getConsumptions(data);
 
+    this.lineChartData = 0;
     this.lineChartData = {
       labels: horas,
       datasets: [
@@ -99,33 +100,33 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private getCurrents(dados): any[] {
+  private getCurrents(data): any[] {
     const yAxis: any[] = [];
-    for (const item of dados) {
+    for (const item of data) {
       yAxis.push(item.current);
     }
     return yAxis;
   }
 
-  private getDeltaTemps(dados): any[] {
+  private getDeltaTemps(data): any[] {
     const yAxis: any[] = [];
-    for (const item of dados) {
+    for (const item of data) {
       yAxis.push(item.deltaTemp);
     }
     return yAxis;
   }
 
-  private getConsumptions(dados): any[] {
+  private getConsumptions(data): any[] {
     const yAxis: any[] = [];
-    for (const item of dados) {
+    for (const item of data) {
       yAxis.push(item.consumption);
     }
     return yAxis;
 }
 
-  private getHours(dados) {
+  private getHours(data) {
     const hours: string[] = [];
-    for (const item of dados) {
+    for (const item of data) {
       hours.push(item.date.substr(11, 8));
     }
     return hours;
