@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   consumptions: any[];
   deltaTemps: any[];
 
-  interval = 10000;
+  interval = 50000;
   sensor: Sensor;
 
   options = {
@@ -53,6 +53,8 @@ export class DashboardComponent implements OnInit {
     setInterval(() => this.dashboardService.getDataFromMauaServer()
       .then(response => {
         this.updateLocalVars(response);
+        this.setupLineGraph();
+        this.setupBarGraph();
       }), this.interval);
   }
 
