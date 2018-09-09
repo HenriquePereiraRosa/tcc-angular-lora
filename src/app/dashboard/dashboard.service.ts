@@ -40,6 +40,7 @@ export class DashboardService {
       .toPromise()
       .then(responseArray => {
         const dataAux = responseArray;
+        this.sensors = [];
         let consumption = 0;
         let current = 0;
         let temperature = 0;

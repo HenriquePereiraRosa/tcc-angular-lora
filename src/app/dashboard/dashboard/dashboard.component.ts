@@ -15,9 +15,13 @@ export class DashboardComponent implements OnInit {
 
   barChartData: any;
   lineChartData: any;
-  data = any[];
+  // data: any[];
+  horas: any[];
+  correntes: any[];
+  consumptions: any[];
+  deltaTemps: any[];
 
-  interval = 50000;
+  interval = 10000;
   sensor: Sensor;
 
   options = {
@@ -27,7 +31,6 @@ export class DashboardComponent implements OnInit {
           const dataset = data.datasets[tooltipItem.datasetIndex];
           const valor = dataset.data[tooltipItem.index];
           const label = dataset.label ? (dataset.label + ': ') : '';
-
           return label + this.decimalPipe.transform(valor, '1.2-2');
         }
       }
@@ -42,34 +45,65 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.dashboardService.getDataFromMauaServer()
       .then(response => {
-        this.data = reponse;
-        this.configurarGraficoLinha(this.data);
-        this.configurarGraficoPizza(this.data);
+        this.updateLocalVars(response);
+        this.setupLineGraph();
+        this.setupBarGraph();
       });
-    
+
     setInterval(() => this.dashboardService.getDataFromMauaServer()
       .then(response => {
-        this.data = reponse;
+        this.updateLocalVars(response);
       }), this.interval);
   }
 
 
-  configurarGraficoPizza(data) {
+  updateLocalVars(response) {
+    this.sensor = response[response.length - 1];
+    this.horas = this.getHours(response);
+    this.correntes = this.getCurrents(response);
+    this.consumptions = this.getConsumptions(response);
+    this.deltaTemps = this.getDeltaTemps(response);
+  }
 
-    const horas = this.getHours(data);
-    this.sensor = data[data.length - 1];
-    const deltaTemps = this.getDeltaTemps(data);
+  private setupLineGraph() {
+    // this.sensor = this.data[this.data.length - 1];
+    // const horas = this.getHours(this.data);
+    // const correntes = this.getCurrents(this.data);
+    // const consumptions = this.getConsumptions(this.data);
+
+    this.lineChartData = {
+      labels: this.horas,
+      datasets: [
+          {
+              label: 'Correntes',
+              data: this.correntes,
+              fill: true,
+              borderColor: '#4bc0c0'
+          },
+          {
+              label: 'Consumo [W/°C]',
+              data: this.consumptions,
+              fill: true,
+              borderColor: '#565656'
+          }
+      ]
+    }
+  }
+
+  setupBarGraph() {
+    // this.sensor = this.data[this.data.length - 1];
+    // const horas = this.getHours(this.data);
+    // const deltaTemps = this.getDeltaTemps(this.data);
     // const consumptions = this.getConsumptions(dados);
 
-    this.barChartData = 0;
     this.barChartData = {
-      labels: horas,
+      labels: this.horas,
         datasets: [
           {
             label: 'Diferencial de Temperaturas',
             backgroundColor: '#42A5F5',
             borderColor: '#1E88E5',
-            data: deltaTemps
+            data: this.deltaTemps
           // },
           // {
           //   label: 'Consumo de Energia / Delta Temperatura [W/°C]',
@@ -77,32 +111,6 @@ export class DashboardComponent implements OnInit {
           //   borderColor: '#1E88E5',
           //   data: consumptions
           }]
-    }
-  }
-
-  private configurarGraficoLinha(data) {
-
-    const horas = this.getHours(data);
-    const correntes = this.getCurrents(data);
-    const consumptions = this.getConsumptions(data);
-
-    this.lineChartData = 0;
-    this.lineChartData = {
-      labels: horas,
-      datasets: [
-          {
-              label: 'Correntes',
-              data: correntes,
-              fill: true,
-              borderColor: '#4bc0c0'
-          },
-          {
-              label: 'Consumo [W/°C]',
-              data: consumptions,
-              fill: true,
-              borderColor: '#565656'
-          }
-      ]
     }
   }
 
@@ -133,7 +141,7 @@ export class DashboardComponent implements OnInit {
   private getHours(data) {
     const hours: string[] = [];
     for (const item of data) {
-      hours.push(item.date.substr(11, 8));
+      hours.push(item.date.substr(11, 5));
     }
     return hours;
   }
