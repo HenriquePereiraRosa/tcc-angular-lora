@@ -91,10 +91,6 @@ export class DashboardComponent implements OnInit {
   }
 
   setupBarGraph() {
-    // this.sensor = this.data[this.data.length - 1];
-    // const horas = this.getHours(this.data);
-    // const deltaTemps = this.getDeltaTemps(this.data);
-    // const consumptions = this.getConsumptions(dados);
 
     this.barChartData = {
       labels: this.horas,
