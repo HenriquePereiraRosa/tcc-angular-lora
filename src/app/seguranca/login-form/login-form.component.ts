@@ -11,9 +11,15 @@ import { AuthService } from './../auth.service';
 })
 export class LoginFormComponent {
 
+  email: string;
+  password: string;
+
   constructor(private auth: AuthService,
     private errorHandler: ErrorHandlerService,
-    private router: Router) { }
+    private router: Router) {
+      this.email = 'admin@server.com';
+      this.password = 'admin';
+     }
 
   login(usuario: string, senha: string) {
     this.auth.login(usuario, senha)

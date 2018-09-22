@@ -12,7 +12,7 @@ export class AuthService {
   oauthTokenUrl: string;
   jwtPayload: any;
 
-  usuario =  'admin@spring.com';
+  usuario =  'admin@server.com';
   senha = 'admin';
 
   constructor(
