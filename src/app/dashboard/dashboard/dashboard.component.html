@@ -4,48 +4,47 @@
       <h1 class="title">Dashboard - AR CONDICIONADO</h1>
     </div>
 
-    <div class="p-col-12">
-      <div class="p-grid p-align-stretched vertical-container">
-        <div class="p-col-12 p-md-4 p-lg-4">
-          <div class="box">
-            <p-card>
-              <h4>Corrente: {{sensor?.current}}A</h4>
-            </p-card>
-          </div>
+
+    <div class="p-grid">
+      <div class="p-col-12 p-md-4">
+        <div class="box">
+          <p-card>
+            <h4>Corrente: {{sensor?.current}}A</h4>
+          </p-card>
         </div>
+      </div>
 
-        <div class="p-col p-md-4 p-lg-4">
-          <div class="box">
-            <p-card>
-              Temperatura: {{sensor?.temperature}}ºC
-            </p-card>
+      <div class="p-col-12 p-md-4">
+        <div class="box">
+          <p-card>
+            Temperatura: {{sensor?.temperature}}ºC
+          </p-card>
 
-            <p-card>
-              Umidade: {{sensor?.humidity}}%
-            </p-card>
+          <p-card>
+            Umidade: {{sensor?.humidity}}%
+          </p-card>
 
-            <p-card>
-              Bateria: {{sensor?.vBat}}V
-            </p-card>
-          </div>
+          <p-card>
+            Bateria: {{sensor?.vBat}}V
+          </p-card>
         </div>
+      </div>
 
-        <div class="p-col p-md-4 p-lg-4">
-          <div class="box">
-            <p-card>
-              <div>Status: </div>
-              <br>
-              <div *ngIf="getAnomaly(); then true_content else false_content"></div>
-              <ng-template #true_content><img width='20%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
-              <ng-template #false_content><img width='20%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
-            </p-card>
-          </div>
+      <div class="p-col-12 p-md-4">
+        <div class="box">
+          <p-card>
+            <div>Status: </div>
+            <br>
+            <div *ngIf="getAnomaly(); then true_content else false_content"></div>
+            <ng-template #true_content><img width='20%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
+            <ng-template #false_content><img width='20%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
+          </p-card>
         </div>
       </div>
     </div>
 
     <div class="p-col-12 p-md-12">
-      <div class="container">
+      <div class="margin">
         <h4>Valores no eixo X: {{requestNumber}}</h4>
         <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" max="2000"
           [style]="{'width':'100%'}"></p-slider>

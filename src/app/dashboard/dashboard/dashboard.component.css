@@ -32,8 +32,12 @@ p-card {
     padding-right: 2%;
 }
 
-.margin {    
-    border: 1px solid rgb(32, 255, 32);
+.margin {
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 2%;
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 1px;
 }
 
 .margin2 {    
