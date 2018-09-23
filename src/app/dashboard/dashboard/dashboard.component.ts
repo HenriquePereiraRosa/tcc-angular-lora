@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
 
   barChartData: any;
   lineChartData: any;
-  // data: any[];
+  requestNumber = 20;
   horas: any[];
   correntes: any[];
   consumptions: any[];
@@ -40,22 +40,33 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private decimalPipe: DecimalPipe) {
+      this.requestNumber = 20;
     }
 
   ngOnInit() {
-    this.dashboardService.getDataFromMauaServer()
+    this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
         this.updateLocalVars(response);
         this.setupLineGraph();
         this.setupBarGraph();
       });
 
-    setInterval(() => this.dashboardService.getDataFromMauaServer()
+    setInterval(() => this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
         this.updateLocalVars(response);
         this.setupLineGraph();
         this.setupBarGraph();
       }), this.interval);
+  }
+
+  handleChange(e) {
+    this.dashboardService.getDataFromMauaServer(this.requestNumber)
+      .then(response => {
+        this.updateLocalVars(response);
+        this.setupLineGraph();
+        this.setupBarGraph();
+      });
+      console.log(e);
   }
 
 

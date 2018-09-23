@@ -11,32 +11,31 @@ import { Sensor } from '../core/model';
 export class DashboardService {
 
   lancamentosUrl: string;
-  nodeUrl: string;
-  environmentTempURL: string;
+  nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
+  nodeEuiUrl = '/0004a30b001e8b8e';
+  environmentTempURL = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/1/0004a30b001eb809';
 
   sensors: Sensor[];
   sensor: Sensor;
 
   constructor(private http: ApiHttp) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
-    this.nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/20/0004a30b001e8b8e';
-    this.environmentTempURL = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/1/0004a30b001eb809';
     this.sensors = [];
   }
 
 
-  getDataFromMauaServer(): Promise<any> {
+  getDataFromMauaServer(requestNumber: number): Promise<any> {
     return this.http.get<any>(`${this.environmentTempURL}`)
       .toPromise()
       .then(response => {
         const dados = response;
-        return this.handleData(dados);
+        return this.handleData(dados, requestNumber);
       });
   }
 
 
-  handleData(response): any {
-    return this.http.get<any>(`${this.nodeUrl}`)
+  handleData(response, requestNumber): any {
+    return this.http.get<any>(`${this.nodeUrl}${requestNumber}${this.nodeEuiUrl}`)
       .toPromise()
       .then(responseArray => {
         const dataAux = responseArray;

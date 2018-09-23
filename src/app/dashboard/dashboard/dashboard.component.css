@@ -11,6 +11,30 @@ h1 {
     text-align: center;
 }
 
+.height {
+    height: 90%;
+}
+
+.align-center {    
+    align-content: center;
+    align-items: center;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.margin {    
+    border: 1px solid rgb(32, 255, 32);
+}
+
+.margin2 {    
+    border: 1px solid rgb(32, 136, 255);
+}
+.ui-dashboard-height {
+    border: 1px solid rgb(155, 32, 255);
+    margin-bottom: 1%;
+    padding-top: 1%;
+}
+
 /*.title {
     text-decoration-color: lightgray;
 }
