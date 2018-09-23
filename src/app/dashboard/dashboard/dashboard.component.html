@@ -4,14 +4,14 @@
       <h1 class="title">Dashboard - AR CONDICIONADO</h1>
     </div>
 
-    <div class="ui-g-12 ui-md-12 margin d-flex flex-column">
-       <div class="ui-g-12 ui-md-4 margin2 p-8">
-            <p-card class="d-flex flex-column">
+    <div class="ui-g-12 ui-md-12 margin">
+       <div class="ui-g-12 ui-md-4 margin2" [style]="{'width':'100% !important'}">
+            <p-card>
               <h4>Corrente: {{sensor?.current}}A</h4>
             </p-card>
         </div>
 
-      <div class="ui-g-12 ui-md-4 margin2 p-8">
+      <div class="ui-g-12 ui-md-4 margin2">
         <p-card>
             Temperatura: {{sensor?.temperature}}ºC
         </p-card>
@@ -25,7 +25,7 @@
         </p-card>
       </div>
 
-      <div class="ui-g-12 ui-md-4 margin2 p-8">
+      <div class="ui-g-12 ui-md-4 margin2">
           <p-card>
               <div>Status: </div>
               <br>
