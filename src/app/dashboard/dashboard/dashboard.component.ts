@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   consumptions: any[];
   deltaTemps: any[];
 
-  interval = 50000;
+  interval = 30000;
   sensor: Sensor;
 
   options = {
@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
         this.setupLineGraph();
         this.setupBarGraph();
       });
-      console.log(e);
   }
 
 
