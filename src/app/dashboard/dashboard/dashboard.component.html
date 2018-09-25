@@ -1,67 +1,62 @@
 <div class="container">
-  <div class="p-grid">
-    <div class="p-col-12">
-      <h1 class="title">Dashboard - AR CONDICIONADO</h1>
-    </div>
-
-
+  <div class="p-col-12">
     <div class="p-grid">
+      <div class="p-col-12 p-md-12">
+        <h1 class="title">Dashboard - AR CONDICIONADO</h1>
+      </div>
+
+
+
       <div class="p-col-12 p-md-4">
-        <div class="box">
-          <p-card>
-            <h4>Corrente: {{sensor?.current}}A</h4>
-          </p-card>
+        <div class="margin-smooth">
+          <h4>Corrente: {{sensor?.current}}A</h4>
         </div>
       </div>
 
-      <div class="p-col-12 p-md-4">
-        <div class="box">
-          <p-card>
+      <div class="p-col-12 p-md-3">
+        <div style="height: 28%">
+          <div class="text-middle margin-smooth">
             Temperatura: {{sensor?.temperature}}ºC
-          </p-card>
+          </div>
 
-          <p-card>
+          <div class="text-middle margin-smooth">
             Umidade: {{sensor?.humidity}}%
-          </p-card>
+          </div>
 
-          <p-card>
+          <div class="text-middle margin-smooth">
             Bateria: {{sensor?.vBat}}V
-          </p-card>
+          </div>
         </div>
       </div>
 
       <div class="p-col-12 p-md-4">
-        <div class="box">
-          <p-card>
-            <div>Status: </div>
-            <br>
-            <div *ngIf="getAnomaly(); then true_content else false_content"></div>
-            <ng-template #true_content><img width='20%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
-            <ng-template #false_content><img width='20%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
-          </p-card>
+        <div class="margin-smooth">
+          <div>Status: </div>
+          <div *ngIf="getAnomaly(); then true_content else false_content"></div>
+          <ng-template #true_content><img width='25%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
+          <ng-template #false_content><img width='25%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
         </div>
       </div>
-    </div>
 
-    <div class="p-col-12 p-md-12">
-      <div class="margin">
-        <h4>Valores no eixo X: {{requestNumber}}</h4>
-        <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" max="2000"
-          [style]="{'width':'100%'}"></p-slider>
+      <div class="p-col-12 p-md-12">
+        <div class="margin space">
+          <h4>Valores no eixo X: {{requestNumber}}</h4>
+          <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" max="2000"></p-slider>
+        </div>
       </div>
-    </div>
 
-    <div class="p-col-12 p-md-12">
-      <p-panel header="Corrente">
-        <p-chart type="line" [data]="lineChartData" [options]="options"></p-chart>
-      </p-panel>
-    </div>
+      <div class="p-col-12 p-md-12">
+        <p-panel header="Corrente">
+          <p-chart type="line" [data]="lineChartData" [options]="options"></p-chart>
+        </p-panel>
+      </div>
 
-    <div class="p-col-12 p-md-12">
-      <p-panel header="Diferença de Temperatura Interna e Externa">
-        <p-chart type="bar" [data]="barChartData" [options]="options"></p-chart>
-      </p-panel>
-    </div>
+      <div class="p-col-12 p-md-12">
+        <p-panel header="Diferença de Temperatura Interna e Externa">
+          <p-chart type="bar" [data]="barChartData" [options]="options"></p-chart>
+        </p-panel>
+      </div>
 
+    </div>
   </div>
 </div>
