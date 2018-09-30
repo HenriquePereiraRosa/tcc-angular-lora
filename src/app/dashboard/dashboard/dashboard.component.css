@@ -58,8 +58,8 @@ h1 {
 
 /*.title {
     text-decoration-color: lightgray;
-}
+}*/
 
 .ui-card .ui-card-content {
-    background-color: gray;
-}*/
+    color: darkslategray;
+}
