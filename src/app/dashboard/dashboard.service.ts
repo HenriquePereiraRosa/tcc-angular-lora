@@ -13,10 +13,11 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
   nodeEuiUrl = '/0004a30b001e8b8e';
-  environmentTempURL = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/1/0004a30b001eb809';
-
+  environmentTempURL = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
+  nodeEnvTempEuiURL = '/0004a30b001eb809';
   sensors: Sensor[];
   sensor: Sensor;
+  number
 
   constructor(private http: ApiHttp) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
@@ -25,7 +26,7 @@ export class DashboardService {
 
 
   getDataFromMauaServer(requestNumber: number): Promise<any> {
-    return this.http.get<any>(`${this.environmentTempURL}`)
+    return this.http.get<any>(`${this.environmentTempURL}${requestNumber}${this.nodeEnvTempEuiURL}`)
       .toPromise()
       .then(response => {
         const dados = response;
@@ -48,38 +49,42 @@ export class DashboardService {
         let vBat = 0;
         let date = '';
 
-        for (const item of dataAux.logs) {
+        for (const envTempItem of environmentTemp) {
+          for (const item of dataAux.logs) {
 
-          let stringAux = item.data_payload.substring(2, 6);
-          current = parseInt(stringAux, 16);
-          current -= 102;
-          current = (current / (0.066 / (3.3 / 1024)));
+            let stringAux = item.data_payload.substring(2, 6);
+            current = parseInt(stringAux, 16);
+            current -= 102;
+            current = (current / (0.066 / (3.3 / 1024)));
+            current = parseFloat(current.toFixed(3));
 
-          stringAux = item.data_payload.substring(8, 12);
-          temperature = parseInt(stringAux, 16) / 10;
+            stringAux = item.data_payload.substring(8, 12);
+            temperature = parseInt(stringAux, 16) / 10;
 
-          stringAux = item.data_payload.substring(14, 18);
-          humidity = parseInt(stringAux, 16) / 10;
+            stringAux = item.data_payload.substring(14, 18);
+            humidity = parseInt(stringAux, 16) / 10;
 
-          stringAux = item.data_payload.substring(20, 24);
-          vBat = parseInt(stringAux, 16) / 1000;
+            stringAux = item.data_payload.substring(20, 24);
+            vBat = parseInt(stringAux, 16) / 1000;
 
-          date = item.created_at;
+            date = item.created_at;
 
-          const power = current * 220;
-          const deltaTemp = environmentTemp - temperature;
-          if (deltaTemp) {
-            consumption = power / (Math.abs(deltaTemp));
+            const power = current * 220;
+            const deltaTemp = envTempItem - temperature;
+            if (deltaTemp) {
+              consumption = power / (Math.abs(deltaTemp));
+            }
+
+            let irregularity = false;
+            if (current > 5) {
+              irregularity = true;
+            }
+
+            this.sensor = new Sensor(
+              item.dev_eui, vBat, current, temperature, deltaTemp,
+              humidity, consumption, irregularity, date);
+
           }
-
-          let irregularity = false;
-          if (current > 5) {
-            irregularity = true;
-          }
-
-          this.sensor = new Sensor(
-            item.dev_eui, vBat, current, temperature, deltaTemp,
-            humidity, consumption, irregularity, date);
           this.sensors.push(this.sensor);
         }
 
@@ -92,11 +97,13 @@ export class DashboardService {
   }
 
   handleEnvironmentTemp(data: any): any {
-    let stringAux = '';
-    let environmentTemp = 0;
-    stringAux = data.logs[0].data_payload.substring(2, 6);
-    environmentTemp = parseInt(stringAux, 16) / 10;
-    return environmentTemp;
+    let array: any[] = [0];
+    for (const item of data.logs) {
+      const stringAux = item.data_payload.substring(2, 6);
+      let environmentTemp = parseInt(stringAux, 16) / 10;
+      array.push(environmentTemp);
+    }
+    return array;
   }
 
 } // end Class

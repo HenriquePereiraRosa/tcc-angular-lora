@@ -1,39 +1,39 @@
-<div class="jumbotron">
+<div class="container">
   <div class="p-col-12">
-    <div class="p-grid  p-align-stretch vertical-container">
+    <div class="p-grid">
       <div class="p-col-12 p-md-12">
         <h1 class="title">Dashboard - AR CONDICIONADO</h1>
       </div>
 
-      <div class="p-col-12 p-md-4 p-col-nogutter margin2 box box box-stretched">
-        <p-card class="h-100 d-inline-block">
+      <div class="p-col-12 p-md-4">
+        <p-card>
           <h4>Corrente: {{sensor?.current}}A</h4>
         </p-card>
-        <p-card  class="h-100 d-inline-block">
-          <h5>Coeficiente de Energia: <br> {{sensor?.current}}W/ºC</h5>
+        <p-card>
+          <h5>Coeficiente de Consumo: <br> {{consumptionCoef}}W/ºC</h5>
         </p-card>
       </div>
 
-      <div class="p-col-12 p-md-4 p-col-nogutter margin2 box box box-stretched">
+      <div class="p-col-12 p-md-3">
         <div>
-          <p-card class="h-100 d-inline-block">
+          <p-card>
             Temperatura: {{sensor?.temperature}}ºC
           </p-card>
         </div>
 
-        <div class="margin3">
-          <p-card class="h-100 d-inline-block">
+        <div>
+          <p-card>
             Umidade: {{sensor?.humidity}}%
           </p-card>
         </div>
         <div>
-          <p-card class="h-100 d-inline-block">
+          <p-card>
             Bateria: {{sensor?.vBat}}V
           </p-card>
         </div>
       </div>
 
-      <div class="p-col-12 p-md-4 p-col-nogutter margin3 box box box-stretched">
+      <div class="p-col-12 p-md-4">
         <p-card>
           <div>Status: </div>
           <div *ngIf="getAnomaly(); then true_content else false_content"></div>

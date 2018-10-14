@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   correntes: any[];
   consumptions: any[];
   deltaTemps: any[];
+  consumptionCoef: number;
 
   interval = 30000;
   sensor: Sensor;
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private decimalPipe: DecimalPipe) {
       this.requestNumber = 20;
+      this.consumptionCoef = 0;
     }
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class DashboardComponent implements OnInit {
         this.updateLocalVars(response);
         this.setupLineGraph();
         this.setupBarGraph();
+        this.calcConsumptionCoef();
       });
 
     setInterval(() => this.dashboardService.getDataFromMauaServer(this.requestNumber)
@@ -56,6 +59,7 @@ export class DashboardComponent implements OnInit {
         this.updateLocalVars(response);
         this.setupLineGraph();
         this.setupBarGraph();
+        this.calcConsumptionCoef();
       }), this.interval);
   }
 
@@ -77,11 +81,21 @@ export class DashboardComponent implements OnInit {
     this.deltaTemps = this.getDeltaTemps(response);
   }
 
+  calcConsumptionCoef() {
+    let averageComsumption = 0;
+    let averageDeltaTemp = 0;
+    let i = 0;
+    for(; i < this.consumptions.length; i++) {
+      averageComsumption += this.consumptions[i];
+      averageDeltaTemp += this.deltaTemps[i];
+    }
+    averageComsumption /= i;
+    averageDeltaTemp /= i;
+
+    this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+  }
+
   private setupLineGraph() {
-    // this.sensor = this.data[this.data.length - 1];
-    // const horas = this.getHours(this.data);
-    // const correntes = this.getCurrents(this.data);
-    // const consumptions = this.getConsumptions(this.data);
 
     this.lineChartData = {
       labels: this.horas,
@@ -125,7 +139,7 @@ export class DashboardComponent implements OnInit {
   private getCurrents(data): any[] {
     const yAxis: any[] = [];
     for (const item of data) {
-      yAxis.push(item.current);
+      yAxis.push(parseFloat(item.current.toFixed(3)));
     }
     return yAxis;
   }
