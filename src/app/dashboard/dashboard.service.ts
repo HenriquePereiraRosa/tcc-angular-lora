@@ -13,8 +13,7 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
   nodeEuiUrl = '/0004a30b001e8b8e';
-  environmentTempURL = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
-  nodeEnvTempEuiURL = '/0004a30b001eb809';
+  nodeEnvTempEuiURL = '/0004a30b001a6218'; //'/0004a30b001eb809'; change from DET extern to DET00.
   sensors: Sensor[];
   sensor: Sensor;
   number
@@ -26,7 +25,7 @@ export class DashboardService {
 
 
   getDataFromMauaServer(requestNumber: number): Promise<any> {
-    return this.http.get<any>(`${this.environmentTempURL}${requestNumber}${this.nodeEnvTempEuiURL}`)
+    return this.http.get<any>(`${this.nodeUrl}${requestNumber}${this.nodeEnvTempEuiURL}`)
       .toPromise()
       .then(response => {
         const dados = response;
