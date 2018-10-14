@@ -56,18 +56,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "algamoney-ui:build"
+            "browserTarget": "app-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "algamoney-ui:build:production"
+              "browserTarget": "app-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "algamoney-ui:build"
+            "browserTarget": "app-ui:build"
           }
         },
         "test": {
@@ -114,7 +114,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "algamoney-ui:serve"
+            "devServerTarget": "app-ui:serve"
           }
         },
         "lint": {
@@ -129,7 +129,7 @@
       }
     }
   },
-  "defaultProject": "algamoney-ui",
+  "defaultProject": "app-ui",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
