@@ -43,6 +43,7 @@
     "moment": "^2.18.1",
     "ng2-currency-mask": "^4.1.0",
     "ng2-toasty": "^4.0.3",
+    "node": "10.1.0",
     "npm": "^6.4.1",
     "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0-beta.10",
