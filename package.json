@@ -9,7 +9,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod",
     "postinstall": "ng build --prod"
   },
   "private": true,
@@ -59,7 +58,7 @@
   },
   "devDependencies": {},
   "engines": {
-    "node": "10.0.0",
-    "npm": "^6.0.0"
+    "node": "10.1.0",
+    "npm": "^6.4.1"
   }
 }
