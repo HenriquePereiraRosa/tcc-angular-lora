@@ -85,12 +85,15 @@ export class DashboardComponent implements OnInit {
     let averageComsumption = 0;
     let averageDeltaTemp = 0;
     let i = 0;
-    for(; i < this.consumptions.length; i++) {
+    for (; i < this.consumptions.length; i++) {
       averageComsumption += this.consumptions[i];
       averageDeltaTemp += this.deltaTemps[i];
     }
     averageComsumption /= i;
     averageDeltaTemp /= i;
+
+    console.log(`CONSUMO Médio: ${averageComsumption}`);
+    console.log(`Delta Temperatura Média: ${averageDeltaTemp}`);
 
     this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
   }
