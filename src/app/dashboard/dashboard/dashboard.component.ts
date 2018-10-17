@@ -172,7 +172,10 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    console.log(this.sensor.anomaly);
-    return this.sensor.anomaly;
+    // console.log(this.sensor.anomaly);
+    console.log(this.consumptionCoef);
+    if(this.consumptionCoef > 5)
+      return true;
+    return false;
   }
 }
