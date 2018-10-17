@@ -13,7 +13,7 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
   nodeEuiUrl = '/0004a30b001e8b8e';
-  nodeEnvTempEuiURL = '/0004a30b001a6218'; // '/0004a30b001eb809'; change from DET extern to DET00.
+  nodeEnvTempEuiURL = '/0004a30b001eb809';
   sensors: Sensor[];
   sensor: Sensor;
   number
