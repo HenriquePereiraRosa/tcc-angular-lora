@@ -13,7 +13,7 @@ export class DashboardService {
   lancamentosUrl: string;
   nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
   nodeEuiUrl = '/0004a30b001e8b8e';
-  nodeEnvTempEuiURL = '/0004a30b001a6218'; //'/0004a30b001eb809'; change from DET extern to DET00.
+  nodeEnvTempEuiURL = '/0004a30b001a6218'; // '/0004a30b001eb809'; change from DET extern to DET00.
   sensors: Sensor[];
   sensor: Sensor;
   number
@@ -53,7 +53,7 @@ export class DashboardService {
 
             let stringAux = item.data_payload.substring(2, 6);
             current = parseInt(stringAux, 16);
-            current -= 102;
+            current -= 92;
             current = (current / (0.066 / (3.3 / 1024)));
             current = parseFloat(current.toFixed(3));
 
@@ -96,10 +96,10 @@ export class DashboardService {
   }
 
   handleEnvironmentTemp(data: any): any {
-    let array: any[] = [0];
+    const array: any[] = [0];
     for (const item of data.logs) {
       const stringAux = item.data_payload.substring(2, 6);
-      let environmentTemp = parseInt(stringAux, 16) / 10;
+      const environmentTemp = parseInt(stringAux, 16) / 10;
       array.push(environmentTemp);
     }
     return array;
