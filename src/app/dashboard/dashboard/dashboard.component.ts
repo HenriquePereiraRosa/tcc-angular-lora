@@ -84,18 +84,26 @@ export class DashboardComponent implements OnInit {
   calcConsumptionCoef() {
     let averageComsumption = 0;
     let averageDeltaTemp = 0;
-    let i = 0;
-    for (; i < this.consumptions.length; i++) {
-      averageComsumption += this.consumptions[i];
-      averageDeltaTemp += this.deltaTemps[i];
+    // for (let i = 0; i < this.consumptions.length; i++) {
+    //   averageComsumption += this.consumptions[i];
+    //   averageDeltaTemp += this.deltaTemps[i];
+    // }
+    for (const item of this.consumptions) {
+      averageComsumption += item;
     }
-    averageComsumption /= i;
-    averageDeltaTemp /= i;
+    for (const item of this.deltaTemps) {
+      averageDeltaTemp += item;
+    }
+    averageComsumption /= this.consumptions.length;
+    averageDeltaTemp /= this.deltaTemps.length;
 
     console.log(`CONSUMO Médio: ${averageComsumption}`);
     console.log(`Delta Temperatura Média: ${averageDeltaTemp}`);
 
-    this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+    if (averageDeltaTemp) {
+      this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+    }
+    this.consumptionCoef = 0;
   }
 
   private setupLineGraph() {
@@ -113,7 +121,7 @@ export class DashboardComponent implements OnInit {
               label: 'Consumo [W/°C]',
               data: this.consumptions,
               fill: true,
-              borderColor: '#565656'
+              borderColor: '#333399'
           }
       ]
     }
@@ -174,8 +182,9 @@ export class DashboardComponent implements OnInit {
   public getAnomaly(): boolean {
     // console.log(this.sensor.anomaly);
     console.log(this.consumptionCoef);
-    if(this.consumptionCoef > 5)
+    if (this.consumptionCoef > 5) {
       return true;
+    }
     return false;
   }
 }

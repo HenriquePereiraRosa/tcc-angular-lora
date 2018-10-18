@@ -72,7 +72,13 @@ export class DashboardService {
             const deltaTemp = envTempItem - temperature;
             if (deltaTemp) {
               consumption = power / (Math.abs(deltaTemp));
+            } else {
+              consumption = 0;
             }
+
+            // DEBUG
+            console.log(`POWER: ${power}`);
+            console.log(`CURRENT: ${current}`);
 
             let irregularity = false;
             if (current > 5) {
