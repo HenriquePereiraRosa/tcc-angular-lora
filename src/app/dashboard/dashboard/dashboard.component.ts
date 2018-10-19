@@ -15,10 +15,13 @@ export class DashboardComponent implements OnInit {
 
   barChartData: any;
   lineChartData: any;
+  lineChartData2: any;
   requestNumber = 20;
   horas: any[];
   correntes: any[];
   consumptions: any[];
+  envTemps: any[];
+  sensorTemps: any[];
   deltaTemps: any[];
   consumptionCoef: number;
 
@@ -50,6 +53,7 @@ export class DashboardComponent implements OnInit {
       .then(response => {
         this.updateLocalVars(response);
         this.setupLineGraph();
+        this.setupLineGraph2();
         this.setupBarGraph();
         this.calcConsumptionCoef();
       });
@@ -58,6 +62,7 @@ export class DashboardComponent implements OnInit {
       .then(response => {
         this.updateLocalVars(response);
         this.setupLineGraph();
+        this.setupLineGraph2();
         this.setupBarGraph();
         this.calcConsumptionCoef();
       }), this.interval);
@@ -68,6 +73,7 @@ export class DashboardComponent implements OnInit {
       .then(response => {
         this.updateLocalVars(response);
         this.setupLineGraph();
+        this.setupLineGraph2();
         this.setupBarGraph();
       });
   }
@@ -78,32 +84,29 @@ export class DashboardComponent implements OnInit {
     this.horas = this.getHours(response);
     this.correntes = this.getCurrents(response);
     this.consumptions = this.getConsumptions(response);
+    this.envTemps = this.getEnvTemps(response);
+    this.sensorTemps = this.getSensorTemps(response);
     this.deltaTemps = this.getDeltaTemps(response);
   }
 
   calcConsumptionCoef() {
     let averageComsumption = 0;
     let averageDeltaTemp = 0;
-    // for (let i = 0; i < this.consumptions.length; i++) {
-    //   averageComsumption += this.consumptions[i];
-    //   averageDeltaTemp += this.deltaTemps[i];
-    // }
+    
     for (const item of this.consumptions) {
       averageComsumption += item;
     }
     for (const item of this.deltaTemps) {
-      averageDeltaTemp += item;
+      averageDeltaTemp += Math.abs(item);
     }
     averageComsumption /= this.consumptions.length;
     averageDeltaTemp /= this.deltaTemps.length;
 
-    console.log(`CONSUMO Médio: ${averageComsumption}`);
-    console.log(`Delta Temperatura Média: ${averageDeltaTemp}`);
-
     if (averageDeltaTemp) {
       this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+    } else {
+      this.consumptionCoef = 0;
     }
-    this.consumptionCoef = 0;
   }
 
   private setupLineGraph() {
@@ -112,7 +115,7 @@ export class DashboardComponent implements OnInit {
       labels: this.horas,
       datasets: [
           {
-              label: 'Correntes',
+              label: 'Correntes [A]',
               data: this.correntes,
               fill: true,
               borderColor: '#4bc0c0'
@@ -122,6 +125,27 @@ export class DashboardComponent implements OnInit {
               data: this.consumptions,
               fill: true,
               borderColor: '#333399'
+          }
+      ]
+    }
+  }
+
+  private setupLineGraph2() {
+
+    this.lineChartData2 = {
+      labels: this.horas,
+      datasets: [
+          {
+              label: 'Ambiente Externo [°C]',
+              data: this.envTemps,
+              fill: true,
+              borderColor: '#3e78c7'
+          },
+          {
+              label: 'Ambiente Interno [°C]',
+              data: this.sensorTemps,
+              fill: true,
+              borderColor: '#081242'
           }
       ]
     }
@@ -151,6 +175,22 @@ export class DashboardComponent implements OnInit {
     const yAxis: any[] = [];
     for (const item of data) {
       yAxis.push(parseFloat(item.current.toFixed(3)));
+    }
+    return yAxis;
+  }
+
+  private getEnvTemps(data): any[] {
+    const yAxis: any[] = [];
+    for (const item of data) {
+      yAxis.push(item.envTemp);
+    }
+    return yAxis;
+  }
+
+  private getSensorTemps(data): any[] {
+    const yAxis: any[] = [];
+    for (const item of data) {
+      yAxis.push(item.temperature);
     }
     return yAxis;
   }

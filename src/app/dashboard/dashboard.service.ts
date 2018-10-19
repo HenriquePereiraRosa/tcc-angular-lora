@@ -86,7 +86,7 @@ export class DashboardService {
             }
 
             this.sensor = new Sensor(
-              item.dev_eui, vBat, current, temperature, deltaTemp,
+              item.dev_eui, vBat, current, environmentTemp, temperature, deltaTemp,
               humidity, consumption, irregularity, date);
 
           }

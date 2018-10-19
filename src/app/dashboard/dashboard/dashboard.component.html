@@ -56,6 +56,12 @@
       </div>
 
       <div class="p-col-12 p-md-12">
+        <p-panel header="Temperaturas">
+          <p-chart type="line" [data]="lineChartData2" [options]="options"></p-chart>
+        </p-panel>
+      </div>
+
+      <div class="p-col-12 p-md-12">
         <p-panel header="Diferença de Temperatura Interna e Externa">
           <p-chart type="bar" [data]="barChartData" [options]="options"></p-chart>
         </p-panel>

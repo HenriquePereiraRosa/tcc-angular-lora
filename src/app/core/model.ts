@@ -65,6 +65,7 @@ export class Sensor {
   dev_eui: string;
   vBat: number;
   current: number;
+  envTemp: number;
   temperature: number;
   deltaTemp: number;
   humidity: number;
@@ -76,6 +77,7 @@ export class Sensor {
     dev_eui: string,
     vBat: number,
     current: number,
+    envTemp: number,
     temperature: number,
     deltaTemp: number,
     humidity: number,
@@ -85,6 +87,7 @@ export class Sensor {
       this.dev_eui = dev_eui;
       this.vBat = vBat;
       this.current = current;
+      this.envTemp = envTemp;
       this.temperature = temperature;
       this.deltaTemp = deltaTemp;
       this.humidity = humidity;
