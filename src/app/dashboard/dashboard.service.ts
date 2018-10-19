@@ -70,15 +70,17 @@ export class DashboardService {
 
             const power = current * 220;
             const deltaTemp = envTempItem - temperature;
+
+            // DEBUG
+            console.log(`SensorTemp: ${temperature}`);
+            console.log(`EnvTemp: ${envTempItem}`);
+
+
             if (deltaTemp) {
               consumption = power / (Math.abs(deltaTemp));
             } else {
               consumption = 0;
             }
-
-            // DEBUG
-            console.log(`POWER: ${power}`);
-            console.log(`CURRENT: ${current}`);
 
             let irregularity = false;
             if (current > 5) {
@@ -102,7 +104,7 @@ export class DashboardService {
   }
 
   handleEnvironmentTemp(data: any): any {
-    const array: any[] = [0];
+    const array: any[] = [];
     for (const item of data.logs) {
       const stringAux = item.data_payload.substring(2, 6);
       const environmentTemp = parseInt(stringAux, 16) / 10;
