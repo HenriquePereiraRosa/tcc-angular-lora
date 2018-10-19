@@ -86,13 +86,14 @@ export class DashboardComponent implements OnInit {
     this.consumptions = this.getConsumptions(response);
     this.envTemps = this.getEnvTemps(response);
     this.sensorTemps = this.getSensorTemps(response);
+    console.log(`SensorTemps: ${ this.getSensorTemps(response)}`)
     this.deltaTemps = this.getDeltaTemps(response);
   }
 
   calcConsumptionCoef() {
     let averageComsumption = 0;
     let averageDeltaTemp = 0;
-    
+
     for (const item of this.consumptions) {
       averageComsumption += item;
     }
@@ -220,8 +221,6 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    // console.log(this.sensor.anomaly);
-    console.log(this.consumptionCoef);
     if (this.consumptionCoef > 5) {
       return true;
     }
