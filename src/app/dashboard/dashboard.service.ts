@@ -48,51 +48,55 @@ export class DashboardService {
         let vBat = 0;
         let date = '';
 
-        for (const envTempItem of environmentTemp) {
-          for (const item of dataAux.logs) {
+        let counter = 0;
 
-            let stringAux = item.data_payload.substring(2, 6);
-            current = parseInt(stringAux, 16);
-            current -= 92;
-            current = (current / (0.066 / (3.3 / 1024)));
-            current = parseFloat(current.toFixed(3));
+        for (const item of dataAux.logs) {
 
-            stringAux = item.data_payload.substring(8, 12);
-            temperature = parseInt(stringAux, 16) / 10;
+          const envTempItem = environmentTemp[counter];
 
-            stringAux = item.data_payload.substring(14, 18);
-            humidity = parseInt(stringAux, 16) / 10;
+          let stringAux = item.data_payload.substring(2, 6);
+          current = parseInt(stringAux, 16);
+          current -= 92;
+          current = (current / (0.066 / (3.3 / 1024)));
+          current = parseFloat(current.toFixed(3));
 
-            stringAux = item.data_payload.substring(20, 24);
-            vBat = parseInt(stringAux, 16) / 1000;
+          stringAux = item.data_payload.substring(8, 12);
+          temperature = parseInt(stringAux, 16) / 10;
 
-            date = item.created_at;
+          stringAux = item.data_payload.substring(14, 18);
+          humidity = parseInt(stringAux, 16) / 10;
 
-            const power = current * 220;
-            const deltaTemp = envTempItem - temperature;
+          stringAux = item.data_payload.substring(20, 24);
+          vBat = parseInt(stringAux, 16) / 1000;
 
-            // DEBUG
-            console.log(`SensorTemp: ${temperature}`);
-            console.log(`EnvTemp: ${envTempItem}`);
+          date = item.created_at;
+
+          const power = current * 220;
+          const deltaTemp = envTempItem - temperature;
+
+          // DEBUG
+          console.log(`SensorTemp: ${temperature}`);
+          console.log(`EnvTemp: ${envTempItem}`);
 
 
-            if (deltaTemp) {
-              consumption = power / (Math.abs(deltaTemp));
-            } else {
-              consumption = 0;
-            }
-
-            let irregularity = false;
-            if (current > 5) {
-              irregularity = true;
-            }
-
-            this.sensor = new Sensor(
-              item.dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
-              humidity, consumption, irregularity, date);
-
+          if (deltaTemp) {
+            consumption = power / (Math.abs(deltaTemp));
+          } else {
+            consumption = 0;
           }
+
+          let irregularity = false;
+          if (current > 5) {
+            irregularity = true;
+          }
+
+          this.sensor = new Sensor(
+            item.dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
+            humidity, consumption, irregularity, date);
+
           this.sensors.push(this.sensor);
+
+          counter++;
         }
 
         this.sensors = this.sensors.reverse();

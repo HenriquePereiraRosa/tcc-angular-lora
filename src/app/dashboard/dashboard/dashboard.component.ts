@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   deltaTemps: any[];
   consumptionCoef: number;
 
-  interval = 30000;
+  interval = 90000;
   sensor: Sensor;
 
   options = {

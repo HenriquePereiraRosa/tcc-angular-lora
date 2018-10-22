@@ -25,11 +25,13 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.logoutService.logout()
-      .then(() => {
-        this.router.navigate(['/login']);
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+    // this.logoutService.logout()
+    //   .then(() => {
+    //     this.router.navigate(['/login']);
+    //   })
+    //   .catch(erro => this.errorHandler.handle(erro));
+
+    this.router.navigate(['/login']);
   }
 
 }

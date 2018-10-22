@@ -11,18 +11,18 @@ import { AuthService } from './../auth.service';
 })
 export class LoginFormComponent {
 
-  email: string;
+  user: string;
   password: string;
 
   constructor(private auth: AuthService,
     private errorHandler: ErrorHandlerService,
     private router: Router) {
-      this.email = 'admin@server.com';
+      this.user = 'admin@server.com';
       this.password = 'admin';
      }
 
-  login(usuario: string, senha: string) {
-    this.auth.login(usuario, senha)
+  login(user: string, senha: string) {
+    this.auth.login(user, senha)
       .then(() => {
         this.router.navigate(['/dashboard']);
       })
@@ -30,5 +30,13 @@ export class LoginFormComponent {
         this.errorHandler.handle(erro);
       });
   }
+
+
+  subscribe(email: string) {
+
+    // DEBUG
+    console.log(`EMAIL: ${email}`);
+  }
+
 
 }

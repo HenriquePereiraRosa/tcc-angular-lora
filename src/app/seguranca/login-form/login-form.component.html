@@ -9,22 +9,41 @@
 
       <div class="ui-g-12 ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-        <input pInputText type="email" name="usuario" placeholder="E-mail" [(ngModel)]="email"
-          ngModel required #usuario>
+        <input pInputText type="email" name="usuario" placeholder="E-mail" [(ngModel)]="user" ngModel required
+          #usuario>
       </div>
 
       <div class="ui-g-12 ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
-        <input pInputText type="password" name="senha" placeholder="Senha" [(ngModel)]="password"
-          ngModel required #senha>
+        <input pInputText type="password" name="senha" placeholder="Senha" [(ngModel)]="password" ngModel required
+          #senha>
       </div>
 
       <div class="ui-g-12">
-        <button pButton type="submit" label="Login" [disabled]="!f.valid"
-          (click)="login(usuario.value, senha.value);"></button>
+        <button pButton type="submit" label="Login" [disabled]="!f.valid" (click)="login(usuario.value, senha.value);"></button>
       </div>
 
     </div>
   </form>
+
+  <br>
+  <br>
+  <br>
+  <div>
+
+    <div class="ui-g-12">
+      <h2> ASSINE NOSSA NEWSLETTER!</h2>
+    </div>
+
+    <div class="ui-g-12 ui-inputgroup">
+      <span class="ui-inputgroup-addon"><i class="fa fa-at"></i></span>
+      <input pInputText type="email" name="email" placeholder="e-mail" ngModel #email>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Inscrever"(click)="subscribe(email.value);"></button>
+    </div>
+
+  </div>
 
 </div>
