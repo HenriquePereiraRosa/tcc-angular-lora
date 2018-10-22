@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.consumptionCoef > 5) {
+    if (this.consumptionCoef > 25) {
       return true;
     }
     return false;
