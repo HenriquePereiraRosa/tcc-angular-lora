@@ -74,11 +74,6 @@ export class DashboardService {
           const power = current * 220;
           const deltaTemp = envTempItem - temperature;
 
-          // DEBUG
-          console.log(`SensorTemp: ${temperature}`);
-          console.log(`EnvTemp: ${envTempItem}`);
-
-
           if (deltaTemp) {
             consumption = power / (Math.abs(deltaTemp));
           } else {
@@ -101,8 +96,8 @@ export class DashboardService {
 
         this.sensors = this.sensors.reverse();
 
-        console.log(`Sensors:`);
-        console.log(this.sensors);
+        // console.log(`Sensors:`);
+        // console.log(this.sensors);
         return this.sensors;
       });
   }

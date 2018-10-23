@@ -27,10 +27,6 @@ export class AuthService {
 
     const promise = new Promise((resolve, reject) => {
 
-      // DEBUG
-      console.log(`USUÁRIO: ${usuario}`);
-      console.log(`SENHA: ${senha}`);
-
       if (((this.usuario === usuario) && (this.senha === senha))) {
         resolve('Success!');
       } else {
