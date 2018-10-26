@@ -96,3 +96,8 @@ export class Sensor {
       this.date = date;
     }
 }
+
+export class Email {
+  id: number;
+  email: string;
+}

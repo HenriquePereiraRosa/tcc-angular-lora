@@ -86,7 +86,6 @@ export class DashboardComponent implements OnInit {
     this.consumptions = this.getConsumptions(response);
     this.envTemps = this.getEnvTemps(response);
     this.sensorTemps = this.getSensorTemps(response);
-    console.log(`SensorTemps: ${ this.getSensorTemps(response)}`)
     this.deltaTemps = this.getDeltaTemps(response);
   }
 

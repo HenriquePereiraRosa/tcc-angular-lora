@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://springbootintro.herokuapp.com',
+  apiUrl: 'https://tcc-email-server.herokuapp.com',
 
-  tokenWhitelistedDomains: [ new RegExp('https://springbootintro.herokuapp.com') ],
+  tokenWhitelistedDomains: [ new RegExp('https://tcc-email-server.herokuapp.com') ],
   tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ]
 };

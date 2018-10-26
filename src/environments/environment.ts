@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://tcc-email-server.herokuapp.com',
 
   tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
   tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ]

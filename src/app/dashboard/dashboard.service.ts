@@ -54,20 +54,16 @@ export class DashboardService {
 
           const envTempItem = environmentTemp[counter];
 
-          let stringAux = item.data_payload.substring(2, 6);
-          current = parseInt(stringAux, 16);
+          current = parseInt(item.data_payload.substring(2, 6), 16);
           current -= 92;
           current = (current / (0.066 / (3.3 / 1024)));
           current = parseFloat(current.toFixed(3));
 
-          stringAux = item.data_payload.substring(8, 12);
-          temperature = parseInt(stringAux, 16) / 10;
+          temperature = parseInt(item.data_payload.substring(8, 12), 16) / 10;
 
-          stringAux = item.data_payload.substring(14, 18);
-          humidity = parseInt(stringAux, 16) / 10;
+          humidity = parseInt(item.data_payload.substring(14, 18), 16) / 10;
 
-          stringAux = item.data_payload.substring(20, 24);
-          vBat = parseInt(stringAux, 16) / 1000;
+          vBat = parseInt(item.data_payload.substring(20, 24), 16) / 1000;
 
           date = item.created_at;
 
@@ -105,8 +101,7 @@ export class DashboardService {
   handleEnvironmentTemp(data: any): any {
     const array: any[] = [];
     for (const item of data.logs) {
-      const stringAux = item.data_payload.substring(2, 6);
-      const environmentTemp = parseInt(stringAux, 16) / 10;
+      const environmentTemp = parseInt(item.data_payload.substring(2, 6), 16) / 10;
       array.push(environmentTemp);
     }
     return array;
