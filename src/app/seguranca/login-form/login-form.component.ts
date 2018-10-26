@@ -18,7 +18,7 @@ export class LoginFormComponent {
   user: string;
   password: string;
 
-  emailsUrl = 'https://tcc-email-server.herokuapp.com/emails'
+  emailsUrl = 'tcc-email-server.herokuapp.com/emails'
 
   constructor(
     private http: ApiHttp,
