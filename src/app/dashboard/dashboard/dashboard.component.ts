@@ -69,6 +69,7 @@ export class DashboardComponent implements OnInit {
   }
 
   handleChange(e) {
+    console.log(e);
     this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
         this.updateLocalVars(response);
@@ -103,7 +104,7 @@ export class DashboardComponent implements OnInit {
     averageDeltaTemp /= this.deltaTemps.length;
 
     if (averageDeltaTemp) {
-      this.consumptionCoef = parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+      this.consumptionCoef = averageComsumption; // parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
     } else {
       this.consumptionCoef = 0;
     }
@@ -220,7 +221,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.consumptionCoef > 1000) {
+    if (this.consumptionCoef > 2000) {
       return true;
     }
     return false;
