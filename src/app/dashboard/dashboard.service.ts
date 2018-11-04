@@ -50,22 +50,22 @@ export class DashboardService {
 
         let counter = 0;
 
-        for (const item of dataAux.logs) {
+        for (let i = 0; i < dataAux.logs.length; i++) {
 
           const envTempItem = environmentTemp[counter];
 
-          current = parseInt(item.data_payload.substring(2, 6), 16);
+          current = parseInt(dataAux.logs[ i ].data_payload.substring(2, 6), 16);
           current -= 92;
           current = (current / (0.066 / (3.3 / 1024)));
           current = parseFloat(current.toFixed(3));
 
-          temperature = parseInt(item.data_payload.substring(8, 12), 16) / 10;
+          temperature = parseInt(dataAux.logs[ i ].data_payload.substring(8, 12), 16) / 10;
 
-          humidity = parseInt(item.data_payload.substring(14, 18), 16) / 10;
+          humidity = parseInt(dataAux.logs[ i ].data_payload.substring(14, 18), 16) / 10;
 
-          vBat = parseInt(item.data_payload.substring(20, 24), 16) / 1000;
+          vBat = parseInt(dataAux.logs[ i ].data_payload.substring(20, 24), 16) / 1000;
 
-          date = item.created_at;
+          date = dataAux.logs[ i ].created_at;
 
           const power = current * 220;
           const deltaTemp = envTempItem - temperature;
@@ -82,7 +82,7 @@ export class DashboardService {
           }
 
           this.sensor = new Sensor(
-            item.dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
+            dataAux.logs[ i ].dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
             humidity, consumption, irregularity, date);
 
           this.sensors.push(this.sensor);
@@ -91,17 +91,14 @@ export class DashboardService {
         }
 
         this.sensors = this.sensors.reverse();
-
-        // console.log(`Sensors:`);
-        // console.log(this.sensors);
         return this.sensors;
       });
   }
 
   handleEnvironmentTemp(data: any): any {
     const array: any[] = [];
-    for (const item of data.logs) {
-      const environmentTemp = parseInt(item.data_payload.substring(2, 6), 16) / 10;
+    for (let i = 0; i < data.logs.length; i++) {
+      const environmentTemp = parseInt(data.logs[ i ].data_payload.substring(2, 6), 16) / 10;
       array.push(environmentTemp);
     }
     return array;
