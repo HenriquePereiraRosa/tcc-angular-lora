@@ -9,6 +9,12 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [ AuthGuard ],
     data: { roles: ['ROLE_PESQUISAR_LANCAMENTO'] }
+  },
+  {
+    path: '/dashboard',
+    component: DashboardComponent,
+    canActivate: [ AuthGuard ],
+    data: { roles: [] }
   }
 ];
 

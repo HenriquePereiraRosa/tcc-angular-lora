@@ -7,7 +7,7 @@ import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.compo
 const routes: Routes = [
   { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule'},
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // ToDo: move to dashboard
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'nao-autorizado', component: NaoAutorizadoComponent },
   { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
   { path: '**', redirectTo: 'pagina-nao-encontrada' }
