@@ -55,7 +55,7 @@ export class DashboardService {
           const envTempItem = environmentTemp[counter];
 
           current = parseInt(dataAux.logs[ i ].data_payload.substring(2, 6), 16);
-          current -= 92;
+          current -= 102;
           current = (current / (0.066 / (3.3 / 1024)));
           current = parseFloat(current.toFixed(3));
 
