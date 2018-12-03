@@ -56,7 +56,7 @@ export class DashboardService {
 
           current = parseInt(dataAux.logs[ i ].data_payload.substring(2, 6), 16);
           current -= 102;
-          current = (current / (0.066 / (3.3 / 1024)));
+          current = (current / (0.066 / (3.3 / 1024))) + 0.6;
           current = parseFloat(current.toFixed(3));
 
           temperature = parseInt(dataAux.logs[ i ].data_payload.substring(8, 12), 16) / 10;
@@ -91,6 +91,8 @@ export class DashboardService {
         }
 
         this.sensors = this.sensors.reverse();
+        console.log(`Sensors: `);
+        console.log(this.sensors);
         return this.sensors;
       });
   }

@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   envTemps: any[];
   sensorTemps: any[];
   deltaTemps: any[];
+  averageComsumption: number;
   consumptionCoef: number;
 
   interval = 1500000;
@@ -45,6 +46,7 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private decimalPipe: DecimalPipe) {
       this.requestNumber = 20;
+      this.averageComsumption = 0;
       this.consumptionCoef = 0;
     }
 
@@ -91,21 +93,29 @@ export class DashboardComponent implements OnInit {
   }
 
   calcConsumptionCoef() {
-    let averageComsumption = 0;
+    this.averageComsumption = 0;
     let averageDeltaTemp = 0;
 
     for (let i = 0; i < this.requestNumber; i++) {
-      averageComsumption += this.consumptions[ i ];
+      this.averageComsumption += this.consumptions[ i ];
       averageDeltaTemp += Math.abs(this.deltaTemps[ i ]);
     }
-    averageComsumption /= this.consumptions.length;
+    this.averageComsumption /= this.consumptions.length;
     averageDeltaTemp /= this.deltaTemps.length;
 
     // if (averageDeltaTemp) {
-      this.consumptionCoef = parseFloat((averageComsumption).toFixed(1)); // parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
+    // parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
     // } else {
     //   this.consumptionCoef = 0;
     // }
+    this.averageComsumption = parseFloat((this.averageComsumption).toFixed(1));
+
+    this.consumptionCoef = this.averageComsumption / averageDeltaTemp;
+
+    console .log(`Avg Consumption: ${this.averageComsumption}`);
+    console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
+    console .log(`Coef. Consumo: ${this.consumptionCoef}`);
+
   }
 
   private setupLineGraph() {
