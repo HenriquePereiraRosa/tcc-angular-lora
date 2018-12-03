@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
     this.averageComsumption = 0;
     let averageDeltaTemp = 0;
 
-    for (let i = 0; i < this.requestNumber; i++) {
+    for (let i = 0; i < this.consumptions.length; i++) {
       this.averageComsumption += this.consumptions[ i ];
       averageDeltaTemp += Math.abs(this.deltaTemps[ i ]);
     }
