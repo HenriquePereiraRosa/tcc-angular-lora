@@ -1,73 +1,81 @@
-  <div class="container">
-    <div class="p-col-12">
-      <div class="p-grid">
-        <div class="p-col-12 p-md-12">
-          <h1 class="title">Dashboard - AR CONDICIONADO</h1>
-        </div>
-
-        <div class="p-col-12 p-md-4">
-          <p-card>
-            <h4>Corrente: {{sensor?.current}}A</h4>
-          </p-card>
-          <p-card>
-            <h5>Consumo Médio: <br> {{averageComsumption}}W</h5>
-          </p-card>
-        </div>
-
-        <div class="p-col-12 p-md-3">
-          <div>
-            <p-card>
-              Temperatura: {{sensor?.temperature}}ºC
-            </p-card>
-          </div>
-
-          <div>
-            <p-card>
-              Umidade: {{sensor?.humidity}}%
-            </p-card>
-          </div>
-          <div>
-            <p-card>
-              Bateria: {{sensor?.vBat}}V
-            </p-card>
-          </div>
-        </div>
-
-        <div class="p-col-12 p-md-4">
-          <p-card>
-            <div>Status: </div>
-            <div *ngIf="getAnomaly(); then true_content else false_content"></div>
-            <ng-template #true_content><img width='25%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
-            <ng-template #false_content><img width='25%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
-          </p-card>
-        </div>
-
-        <div class="p-col-12 p-md-12">
-          <div class="margin space">
-            <h4>Valores no eixo X: {{requestNumber}}</h4>
-            <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" (click)="handleChange($event)"
-            [step]="20" [min]="10" [max]="20000"></p-slider>
-          </div>
-        </div>
-
-        <div class="p-col-12 p-md-12">
-          <p-panel header="Consumo">
-            <p-chart type="line" [data]="lineChartData" [options]="options"></p-chart>
-          </p-panel>
-        </div>
-
-        <div class="p-col-12 p-md-12">
-          <p-panel header="Temperaturas">
-            <p-chart type="line" [data]="lineChartData2" [options]="options"></p-chart>
-          </p-panel>
-        </div>
-
-        <div class="p-col-12 p-md-12">
-          <p-panel header="Diferença de Temperatura Interna e Externa">
-            <p-chart type="bar" [data]="barChartData" [options]="options"></p-chart>
-          </p-panel>
-        </div>
-
+<div class="container">
+  <div class="p-col-12">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-12">
+        <h1 class="title">Dashboard - AR CONDICIONADO</h1>
       </div>
+
+      <div class="p-col-12 p-md-4">
+        <p-card>
+          <h4>Corrente: {{sensor?.current}}A</h4>
+        </p-card>
+        <p-card>
+          <h5>Consumo Médio: <br> {{averageComsumption}}W</h5>
+        </p-card>
+      </div>
+
+      <div class="p-col-12 p-md-3">
+        <div>
+          <p-card>
+            Temperatura: {{sensor?.temperature}}ºC
+          </p-card>
+        </div>
+
+        <div>
+          <p-card>
+            Umidade: {{sensor?.humidity}}%
+          </p-card>
+        </div>
+        <div>
+          <p-card>
+            Bateria: {{sensor?.vBat}}V
+          </p-card>
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-4">
+        <p-card>
+          <div>Status: </div>
+          <div *ngIf="getAnomaly(); then true_content else false_content"></div>
+          <ng-template #true_content><img width='25%' src="../../../assets/img/status_icons/error_red.png"></ng-template>
+          <ng-template #false_content><img width='25%' src="../../../assets/img/status_icons/ok_green.jpg"></ng-template>
+        </p-card>
+      </div>
+
+      <div class="p-col-12 p-md-12">
+        <div class="margin space">
+          <div>
+            <h4>Valores no eixo X: {{requestNumber}}</h4>
+          </div>
+          <div>
+            <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)"
+             [step]="20" [min]="10" [max]="20000"></p-slider>
+          </div>
+          <div class="space">
+            <p-spinner size="85%" [(ngModel)]="requestNumber" 
+             (onChange)="handleChange($event)" [step]="20"></p-spinner>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-12">
+        <p-panel header="Consumo">
+          <p-chart type="line" [data]="lineChartData" [options]="options"></p-chart>
+        </p-panel>
+      </div>
+
+      <div class="p-col-12 p-md-12">
+        <p-panel header="Temperaturas">
+          <p-chart type="line" [data]="lineChartData2" [options]="options"></p-chart>
+        </p-panel>
+      </div>
+
+      <div class="p-col-12 p-md-12">
+        <p-panel header="Diferença de Temperatura Interna e Externa">
+          <p-chart type="bar" [data]="barChartData" [options]="options"></p-chart>
+        </p-panel>
+      </div>
+
     </div>
   </div>
+</div>

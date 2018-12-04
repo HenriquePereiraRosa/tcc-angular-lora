@@ -6,6 +6,7 @@ import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { SliderModule } from 'primeng/slider';
+import {SpinnerModule} from 'primeng/spinner';
 
 import { SharedModule } from './../shared/shared.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -20,6 +21,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChartModule,
     CardModule,
     SliderModule,
+    SpinnerModule,
 
     SharedModule,
     DashboardRoutingModule
