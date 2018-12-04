@@ -112,8 +112,8 @@ export class DashboardComponent implements OnInit {
 
     this.consumptionCoef = this.averageComsumption / averageDeltaTemp;
 
-    console .log(`Avg Consumption: ${this.averageComsumption}`);
-    console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
+    // console .log(`Avg Consumption: ${this.averageComsumption}`);
+    // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
     console .log(`Coef. Consumo: ${this.consumptionCoef}`);
 
   }
