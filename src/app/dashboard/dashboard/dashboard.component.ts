@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   averageComsumption: number;
   consumptionCoef: number;
 
-  interval = 1500000;
+  interval = 150000;
   sensor: Sensor;
 
   options = {
@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
   calcConsumptionCoef() {
     this.averageComsumption = 0;
     let averageDeltaTemp = 0;
+    const date = new Date;
 
     for (let i = 0; i < this.consumptions.length; i++) {
       this.averageComsumption += this.consumptions[ i ];
@@ -114,7 +115,8 @@ export class DashboardComponent implements OnInit {
 
     // console .log(`Avg Consumption: ${this.averageComsumption}`);
     // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
-    console .log(`Coef. Consumo: ${this.consumptionCoef}`);
+    // console.log(date.toTimeString());
+    console.log(this.consumptionCoef);
 
   }
 
@@ -229,7 +231,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.consumptionCoef > 2000) {
+    if (this.consumptionCoef > 200) {
       return true;
     }
     return false;
