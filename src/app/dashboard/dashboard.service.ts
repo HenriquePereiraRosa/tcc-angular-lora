@@ -91,8 +91,9 @@ export class DashboardService {
         }
 
         this.sensors = this.sensors.reverse();
-        // console.log(`Sensors: `);
-        // console.log(this.sensors);
+        //  console.log(`Sensors: `);
+        //  console.log(this.sensors);
+
         return this.sensors;
       });
   }
@@ -105,5 +106,6 @@ export class DashboardService {
     }
     return array;
   }
+
 
 } // end Class

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
+import { ExportToCSV } from '@molteni/export-csv';
+
 import { DashboardService } from './../dashboard.service';
 import { getCurrentQueries } from '@angular/core/src/render3/instructions';
 
@@ -26,8 +28,9 @@ export class DashboardComponent implements OnInit {
   averageComsumption: number;
   consumptionCoef: number;
 
-  interval = 1500000;
+  interval = 150000;
   sensor: Sensor;
+  sensors: Sensor[];
 
   options = {
     tooltips: {
@@ -53,7 +56,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
-        this.updateLocalVars(response);
+        this.sensors = response;
+        this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
@@ -62,7 +66,8 @@ export class DashboardComponent implements OnInit {
 
     setInterval(() => this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
-        this.updateLocalVars(response);
+        this.sensors = response;
+        this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
@@ -95,6 +100,7 @@ export class DashboardComponent implements OnInit {
   calcConsumptionCoef() {
     this.averageComsumption = 0;
     let averageDeltaTemp = 0;
+    const date = new Date;
 
     for (let i = 0; i < this.consumptions.length; i++) {
       this.averageComsumption += this.consumptions[ i ];
@@ -114,7 +120,8 @@ export class DashboardComponent implements OnInit {
 
     // console .log(`Avg Consumption: ${this.averageComsumption}`);
     // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
-    console .log(`Coef. Consumo: ${this.consumptionCoef}`);
+    // console.log(date.toTimeString());
+    console.log(this.consumptionCoef);
 
   }
 
@@ -229,9 +236,22 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.consumptionCoef > 2000) {
+    if (this.consumptionCoef > 200) {
       return true;
     }
     return false;
   }
+
+  handleClick(event) {
+    const exporter = new ExportToCSV();
+        const columns = ['consumption', 'current', 'date', 
+        'deltaTemp',  'dev_eui', 'envTemp', 'humidity',
+        'temperature', 'vBat'];
+
+        exporter.exportColumnsToCSV(this.sensors, 'data', columns);
+
+        console.log(this.sensors);
+  }
+
+
 }

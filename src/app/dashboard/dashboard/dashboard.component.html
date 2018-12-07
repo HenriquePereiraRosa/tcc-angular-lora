@@ -48,12 +48,13 @@
             <h4>Valores no eixo X: {{requestNumber}}</h4>
           </div>
           <div>
-            <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)"
-             [step]="20" [min]="10" [max]="20000"></p-slider>
+            <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" [max]="20000"></p-slider>
           </div>
           <div class="space">
-            <p-spinner size="85%" [(ngModel)]="requestNumber" 
-             (onChange)="handleChange($event)" [step]="20"></p-spinner>
+            <p-spinner size="85%" [(ngModel)]="requestNumber" (onChange)="handleChange($event)" [step]="20"></p-spinner>
+          </div>
+          <div>
+            <button pButton type="button" label="Exportar CSV" (click)="handleClick($event)"></button>
           </div>
         </div>
       </div>
