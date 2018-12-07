@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
+import { ExportToCSV } from '@molteni/export-csv';
+
 import { DashboardService } from './../dashboard.service';
 import { getCurrentQueries } from '@angular/core/src/render3/instructions';
 
@@ -28,6 +30,7 @@ export class DashboardComponent implements OnInit {
 
   interval = 150000;
   sensor: Sensor;
+  sensors: Sensor[];
 
   options = {
     tooltips: {
@@ -53,7 +56,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
-        this.updateLocalVars(response);
+        this.sensors = response;
+        this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
@@ -62,7 +66,8 @@ export class DashboardComponent implements OnInit {
 
     setInterval(() => this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
-        this.updateLocalVars(response);
+        this.sensors = response;
+        this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
@@ -236,4 +241,17 @@ export class DashboardComponent implements OnInit {
     }
     return false;
   }
+
+  handleClick(event) {
+    const exporter = new ExportToCSV();
+        const columns = ['consumption', 'current', 'date', 
+        'deltaTemp',  'dev_eui', 'envTemp', 'humidity',
+        'temperature', 'vBat'];
+
+        exporter.exportColumnsToCSV(this.sensors, 'data', columns);
+
+        console.log(this.sensors);
+  }
+
+
 }

@@ -93,7 +93,6 @@ export class DashboardService {
         this.sensors = this.sensors.reverse();
         //  console.log(`Sensors: `);
         //  console.log(this.sensors);
-        this.logData(this.sensors);
 
         return this.sensors;
       });
@@ -108,15 +107,5 @@ export class DashboardService {
     return array;
   }
 
-
-  logData(sensors: Sensor[]) {
-    for (let i = 0; i < sensors.length; i++) {
-      console.log(`${sensors[ i ].consumption}, ${sensors[ i ].current},
-      ${sensors[ i ].date},  ${sensors[ i ].deltaTemp},  ${sensors[ i ].dev_eui},
-      ${sensors[ i ].envTemp},  ${sensors[ i ].humidity},  ${sensors[ i ].temperature},
-      ${sensors[ i ].vBat},`);
-    }
-
-  }
 
 } // end Class
