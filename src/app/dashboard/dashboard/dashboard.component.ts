@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import {ExportToCSV} from  "@molteni/export-csv";
+import { ExportToCSV } from '@molteni/export-csv';
 
 import { DashboardService } from './../dashboard.service';
 import { getCurrentQueries } from '@angular/core/src/render3/instructions';
