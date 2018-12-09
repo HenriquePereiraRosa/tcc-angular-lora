@@ -290,7 +290,7 @@ export class DashboardComponent implements OnInit {
       for (const index in array[i]) {
         if (line !== '') {
           line += '|';
-          // line = line.replace('.', ',');
+          line = line.replace('.', ',');
         }
 
         line += array[i][index];
