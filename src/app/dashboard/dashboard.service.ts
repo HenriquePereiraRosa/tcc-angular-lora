@@ -57,7 +57,7 @@ export class DashboardService {
           current = parseInt(dataAux.logs[ i ].data_payload.substring(2, 6), 16);
           // current -= 2;
           current = (current / (1.9 / (3.3 / 1024)));
-          current = parseFloat(current.toFixed(3));
+          current = parseFloat(current.toFixed(2));
 
           temperature = parseInt(dataAux.logs[ i ].data_payload.substring(8, 12), 16) / 10;
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
+import 'rxjs/Rx';
 
 // import { ExportToCSV } from '@molteni/export-csv';
 
@@ -46,9 +48,10 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(
+    private sanitizer: DomSanitizer,
     private dashboardService: DashboardService,
     private decimalPipe: DecimalPipe) {
-    this.requestNumber = 20;
+    this.requestNumber = 40;
     this.averageComsumption = 0;
     this.consumptionCoef = 0;
   }
@@ -114,7 +117,7 @@ export class DashboardComponent implements OnInit {
     // } else {
     //   this.consumptionCoef = 0;
     // }
-    this.averageComsumption = parseFloat((this.averageComsumption).toFixed(1));
+    this.averageComsumption = parseFloat((this.averageComsumption).toFixed(2));
 
     this.consumptionCoef = this.averageComsumption / (averageDeltaTemp + 1);
 
@@ -251,7 +254,49 @@ export class DashboardComponent implements OnInit {
     // exporter.exportColumnsToCSV(this.sensors, 'data', columns);
 
     console.log(this.sensors);
+
+    const csvData = this.ConvertToCSV(this.sensors);
+    const blob = new Blob([csvData], { type: 'application/octet-stream' });
+    console.log(csvData);
+    console.log('start download:');
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = 'data.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
+  ConvertToCSV(objArray: any): string {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+    let row = '';
 
+    // tslint:disable-next-line:forin
+    for (const index in objArray[0]) {
+      // Now convert each value to string and comma-separated
+      row += index + '|';
+    }
+    row = row.slice(0, -1);
+    // append Label row with line break
+    str += row + '\r\n';
+
+    for (let i = 0; i < array.length; i++) {
+      let line = '';
+      // tslint:disable-next-line:forin
+      for (const index in array[i]) {
+        if (line !== '') {
+          line += '|';
+          // line = line.replace('.', ',');
+        }
+
+        line += array[i][index];
+      }
+      str += line + '\r\n';
+    }
+    return str;
+  }
 }
