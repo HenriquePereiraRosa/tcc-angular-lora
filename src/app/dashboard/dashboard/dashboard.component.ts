@@ -135,13 +135,13 @@ export class DashboardComponent implements OnInit {
               data: this.correntes,
               fill: true,
               borderColor: '#4bc0c0'
-          },
-          {
-              label: 'Consumo [W/°C]',
-              data: this.consumptions,
-              fill: true,
-              borderColor: '#333399'
-          }
+           },
+          // {
+          //     label: 'Consumo [W/°C]',
+          //     data: this.consumptions,
+          //     fill: true,
+          //     borderColor: '#333399'
+          // }
       ]
     }
   }
@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
 
   handleClick(event) {
     const exporter = new ExportToCSV();
-        const columns = ['consumption', 'current', 'date', 
+        const columns = ['consumption', 'current', 'date',
         'deltaTemp',  'dev_eui', 'envTemp', 'humidity',
         'temperature', 'vBat'];
 
