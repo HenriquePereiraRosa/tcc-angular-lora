@@ -54,7 +54,7 @@
             <p-spinner size="60%" [(ngModel)]="requestNumber" (onChange)="handleChange($event)" [step]="20" [min]="1"></p-spinner>
           </div>
           <div>
-            <button pButton type="button" label="Exportar CSV" (click)="handleClick($event)"></button>
+            <button pButton disabled="true" type="button" label="Exportar CSV" (click)="handleClick($event)"></button>
           </div>
         </div>
       </div>

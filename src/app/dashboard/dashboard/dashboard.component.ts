@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { ExportToCSV } from '@molteni/export-csv';
+// import { ExportToCSV } from '@molteni/export-csv';
 
 import { DashboardService } from './../dashboard.service';
 import { getCurrentQueries } from '@angular/core/src/render3/instructions';
@@ -48,10 +48,10 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private decimalPipe: DecimalPipe) {
-      this.requestNumber = 20;
-      this.averageComsumption = 0;
-      this.consumptionCoef = 0;
-    }
+    this.requestNumber = 20;
+    this.averageComsumption = 0;
+    this.consumptionCoef = 0;
+  }
 
   ngOnInit() {
     this.dashboardService.getDataFromMauaServer(this.requestNumber)
@@ -103,8 +103,8 @@ export class DashboardComponent implements OnInit {
     const date = new Date;
 
     for (let i = 0; i < this.consumptions.length; i++) {
-      this.averageComsumption += this.consumptions[ i ];
-      averageDeltaTemp += Math.abs(this.deltaTemps[ i ]);
+      this.averageComsumption += this.consumptions[i];
+      averageDeltaTemp += Math.abs(this.deltaTemps[i]);
     }
     this.averageComsumption /= this.consumptions.length;
     averageDeltaTemp /= this.deltaTemps.length;
@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit {
     // }
     this.averageComsumption = parseFloat((this.averageComsumption).toFixed(1));
 
-    this.consumptionCoef = this.averageComsumption / averageDeltaTemp;
+    this.consumptionCoef = this.averageComsumption / (averageDeltaTemp + 1);
 
     // console .log(`Avg Consumption: ${this.averageComsumption}`);
     // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
@@ -130,18 +130,18 @@ export class DashboardComponent implements OnInit {
     this.lineChartData = {
       labels: this.horas,
       datasets: [
-          {
-              label: 'Correntes [A]',
-              data: this.correntes,
-              fill: true,
-              borderColor: '#4bc0c0'
-           },
-          // {
-          //     label: 'Consumo [W/°C]',
-          //     data: this.consumptions,
-          //     fill: true,
-          //     borderColor: '#333399'
-          // }
+        {
+          label: 'Correntes [A]',
+          data: this.correntes,
+          fill: true,
+          borderColor: '#4bc0c0'
+        },
+        // {
+        //     label: 'Consumo [W/°C]',
+        //     data: this.consumptions,
+        //     fill: true,
+        //     borderColor: '#333399'
+        // }
       ]
     }
   }
@@ -151,18 +151,18 @@ export class DashboardComponent implements OnInit {
     this.lineChartData2 = {
       labels: this.horas,
       datasets: [
-          {
-              label: 'Ambiente Externo [°C]',
-              data: this.envTemps,
-              fill: true,
-              borderColor: '#3e78c7'
-          },
-          {
-              label: 'Ambiente Interno [°C]',
-              data: this.sensorTemps,
-              fill: true,
-              borderColor: '#081242'
-          }
+        {
+          label: 'Ambiente Externo [°C]',
+          data: this.envTemps,
+          fill: true,
+          borderColor: '#3e78c7'
+        },
+        {
+          label: 'Ambiente Interno [°C]',
+          data: this.sensorTemps,
+          fill: true,
+          borderColor: '#081242'
+        }
       ]
     }
   }
@@ -171,26 +171,26 @@ export class DashboardComponent implements OnInit {
 
     this.barChartData = {
       labels: this.horas,
-        datasets: [
-          {
-            label: 'Diferencial de Temperaturas',
-            backgroundColor: '#42A5F5',
-            borderColor: '#1E88E5',
-            data: this.deltaTemps
+      datasets: [
+        {
+          label: 'Diferencial de Temperaturas',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: this.deltaTemps
           // },
           // {
           //   label: 'Consumo de Energia / Delta Temperatura [W/°C]',
           //   backgroundColor: '#42A5F5',
           //   borderColor: '#1E88E5',
           //   data: consumptions
-          }]
+        }]
     }
   }
 
   private getCurrents(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(parseFloat(data[ i ].current.toFixed(3)));
+      yAxis.push(parseFloat(data[i].current.toFixed(3)));
     }
     return yAxis;
   }
@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit {
   private getEnvTemps(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[ i ].envTemp);
+      yAxis.push(data[i].envTemp);
     }
     return yAxis;
   }
@@ -206,7 +206,7 @@ export class DashboardComponent implements OnInit {
   private getSensorTemps(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[ i ].temperature);
+      yAxis.push(data[i].temperature);
     }
     return yAxis;
   }
@@ -214,7 +214,7 @@ export class DashboardComponent implements OnInit {
   private getDeltaTemps(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[ i ].deltaTemp);
+      yAxis.push(data[i].deltaTemp);
     }
     return yAxis;
   }
@@ -222,15 +222,15 @@ export class DashboardComponent implements OnInit {
   private getConsumptions(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[ i ].consumption);
+      yAxis.push(data[i].consumption);
     }
     return yAxis;
-}
+  }
 
   private getHours(data) {
     const hours: string[] = [];
     for (let i = 0; i < data.length; i++) {
-      hours.push(data[ i ].date.substr(11, 5));
+      hours.push(data[i].date.substr(11, 5));
     }
     return hours;
   }
@@ -243,14 +243,14 @@ export class DashboardComponent implements OnInit {
   }
 
   handleClick(event) {
-    const exporter = new ExportToCSV();
-        const columns = ['consumption', 'current', 'date',
-        'deltaTemp',  'dev_eui', 'envTemp', 'humidity',
-        'temperature', 'vBat'];
+    // const exporter = new ExportToCSV();
+    const columns = ['consumption', 'current', 'date',
+      'deltaTemp', 'dev_eui', 'envTemp', 'humidity',
+      'temperature', 'vBat'];
 
-        exporter.exportColumnsToCSV(this.sensors, 'data', columns);
+    // exporter.exportColumnsToCSV(this.sensors, 'data', columns);
 
-        console.log(this.sensors);
+    console.log(this.sensors);
   }
 
 
