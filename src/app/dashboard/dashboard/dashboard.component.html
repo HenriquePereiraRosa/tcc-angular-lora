@@ -51,7 +51,8 @@
             <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" [max]="500"></p-slider>
           </div>
           <div style="margin: 1em">
-            <p-spinner size="70%" [(ngModel)]="requestNumber" (onChange)="handleChange($event)" [step]="20" [min]="1"></p-spinner>
+            <p-spinner size="70%"  style="max-width: 350px; margin: auto"
+             [(ngModel)]="requestNumber" (onChange)="handleChange($event)" [step]="20" [min]="1"></p-spinner>
           </div>
           <div >
             <button pButton type="button" label="Exportar CSV" (click)="handleClick($event)"></button>

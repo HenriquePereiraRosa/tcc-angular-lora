@@ -227,19 +227,8 @@ export class DashboardComponent implements OnInit {
   }
 
   handleClick(event) {
-    // const exporter = new ExportToCSV();
-    const columns = ['consumption', 'current', 'date',
-      'deltaTemp', 'dev_eui', 'envTemp', 'humidity',
-      'temperature', 'vBat'];
-
-    // exporter.exportColumnsToCSV(this.sensors, 'data', columns);
-
-    console.log(this.sensors);
-
     const csvData = this.ConvertToCSV(this.sensors);
     const blob = new Blob([csvData], { type: 'application/octet-stream' });
-    console.log(csvData);
-    console.log('start download:');
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     document.body.appendChild(a);
