@@ -24,7 +24,7 @@ export class ErrorHandlerService {
       this.router.navigate(['/login']);
 
     } else if (errorResponse instanceof HttpErrorResponse
-        && errorResponse.status >= 400 && errorResponse.status <= 499) {
+      && errorResponse.status >= 400 && errorResponse.status <= 499) {
       msg = 'Ocorreu um erro ao processar a sua solicitação';
 
       if (errorResponse.status === 403) {
@@ -36,6 +36,15 @@ export class ErrorHandlerService {
       } catch (e) { }
 
       console.error('Ocorreu um erro', errorResponse);
+
+    } else if (errorResponse instanceof HttpErrorResponse) {
+      msg = 'Erro: Verifique sua conexão.';
+
+      try {
+        msg = errorResponse.error[0].mensagemUsuario;
+      } catch (e) { }
+
+      console.error('Possível problema de conexão', errorResponse);
 
     } else {
       msg = 'Erro ao processar serviço remoto. Tente novamente.';

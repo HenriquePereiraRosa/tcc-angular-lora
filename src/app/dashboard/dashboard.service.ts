@@ -40,7 +40,6 @@ export class DashboardService {
       .then(responseArray => {
         const dataAux = responseArray;
         this.sensors = [];
-        let consumption = 0;
         let current = 0;
         let temperature = 0;
         const environmentTemp = this.handleEnvironmentTemp(response);
@@ -67,23 +66,11 @@ export class DashboardService {
 
           date = dataAux.logs[ i ].created_at;
 
-          const power = current * 220;
           const deltaTemp = envTempItem - temperature;
-
-          if (deltaTemp) {
-            consumption = power / (Math.abs(deltaTemp));
-          } else {
-            consumption = 0;
-          }
-
-          let irregularity = false;
-          if (current > 5) {
-            irregularity = true;
-          }
 
           this.sensor = new Sensor(
             dataAux.logs[ i ].dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
-            humidity, consumption, irregularity, date);
+            humidity, date);
 
           this.sensors.push(this.sensor);
 

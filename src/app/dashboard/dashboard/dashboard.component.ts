@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
 import 'rxjs/Rx';
 
 // import { ExportToCSV } from '@molteni/export-csv';
 
 import { DashboardService } from './../dashboard.service';
-import { getCurrentQueries } from '@angular/core/src/render3/instructions';
+import { ErrorHandlerService } from './../../core/error-handler.service';
 
 import { Sensor } from '../../core/model';
 
@@ -21,14 +20,13 @@ export class DashboardComponent implements OnInit {
   lineChartData: any;
   lineChartData2: any;
   requestNumber = 20;
-  horas: any[];
-  correntes: any[];
-  consumptions: any[];
+  hours: any[];
+  currents: any[];
+  powers: any[];
   envTemps: any[];
   sensorTemps: any[];
   deltaTemps: any[];
-  averageComsumption: number;
-  consumptionCoef: number;
+  effortCoef: number;
 
   interval = 150000;
   sensor: Sensor;
@@ -48,99 +46,82 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(
-    private sanitizer: DomSanitizer,
     private dashboardService: DashboardService,
+    private errorHandler: ErrorHandlerService,
     private decimalPipe: DecimalPipe) {
     this.requestNumber = 40;
-    this.averageComsumption = 0;
-    this.consumptionCoef = 0;
+    this.effortCoef = 0;
   }
 
   ngOnInit() {
-    this.dashboardService.getDataFromMauaServer(this.requestNumber)
-      .then(response => {
-        this.sensors = response;
-        this.updateLocalVars(this.sensors);
-        this.setupLineGraph();
-        this.setupLineGraph2();
-        this.setupBarGraph();
-        this.calcConsumptionCoef();
-      });
+    this.getAndHandleData();
 
-    setInterval(() => this.dashboardService.getDataFromMauaServer(this.requestNumber)
-      .then(response => {
-        this.sensors = response;
-        this.updateLocalVars(this.sensors);
-        this.setupLineGraph();
-        this.setupLineGraph2();
-        this.setupBarGraph();
-        this.calcConsumptionCoef();
-      }), this.interval);
+    setInterval(() => this.getAndHandleData(), this.interval);
   }
 
   handleChange(e) {
+    this.getAndHandleData();
+  }
+
+  getAndHandleData() {
     this.dashboardService.getDataFromMauaServer(this.requestNumber)
       .then(response => {
-        this.updateLocalVars(response);
+        this.sensors = response;
+        this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
-      });
+        this.calcEffortCoef();
+      }).catch(erro => this.errorHandler.handle(erro));
   }
 
 
   updateLocalVars(response) {
     this.sensor = response[response.length - 1];
-    this.horas = this.getHours(response);
-    this.correntes = this.getCurrents(response);
-    this.consumptions = this.getConsumptions(response);
+    this.hours = this.getHours(response);
+    this.currents = this.getCurrents(response);
+    this.powers = this.getPowers(response);
     this.envTemps = this.getEnvTemps(response);
     this.sensorTemps = this.getSensorTemps(response);
     this.deltaTemps = this.getDeltaTemps(response);
-    this.calcConsumptionCoef();
+    this.calcEffortCoef();
   }
 
-  calcConsumptionCoef() {
-    this.averageComsumption = 0;
+  calcEffortCoef() {
+    this.effortCoef = 0;
     let averageDeltaTemp = 0;
+    let averagePower = 0;
+    const n = this.powers.length;
     const date = new Date;
 
-    for (let i = 0; i < this.consumptions.length; i++) {
-      this.averageComsumption += this.consumptions[i];
-      averageDeltaTemp += Math.abs(this.deltaTemps[i]);
+    for (let i = 0; i < n; i++) {
+      averagePower += this.powers[i];
+      averageDeltaTemp += this.deltaTemps[i];
     }
-    this.averageComsumption /= this.consumptions.length;
-    averageDeltaTemp /= this.deltaTemps.length;
+    averagePower /= n;
+    averageDeltaTemp /= n;
 
-    // if (averageDeltaTemp) {
-    // parseFloat((averageComsumption / averageDeltaTemp).toFixed(3));
-    // } else {
-    //   this.consumptionCoef = 0;
-    // }
-    this.averageComsumption = parseFloat((this.averageComsumption).toFixed(2));
+    this.effortCoef = averagePower / (Math.abs(averageDeltaTemp) + 1);
+    this.effortCoef = parseFloat((this.effortCoef).toFixed(2));
 
-    this.consumptionCoef = this.averageComsumption / (averageDeltaTemp + 1);
-
-    // console .log(`Avg Consumption: ${this.averageComsumption}`);
+    console.log(`Effort Coef.: ${this.effortCoef}`);
     // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
     // console.log(date.toTimeString());
-    console.log(this.consumptionCoef);
-
   }
 
   private setupLineGraph() {
 
     this.lineChartData = {
-      labels: this.horas,
+      labels: this.hours,
       datasets: [
         {
           label: 'Correntes [A]',
-          data: this.correntes,
+          data: this.currents,
           fill: true,
           borderColor: '#4bc0c0'
         },
         // {
-        //     label: 'Consumo [W/°C]',
+        //     label: 'Esforço inst. [W/°C]',
         //     data: this.consumptions,
         //     fill: true,
         //     borderColor: '#333399'
@@ -152,7 +133,7 @@ export class DashboardComponent implements OnInit {
   private setupLineGraph2() {
 
     this.lineChartData2 = {
-      labels: this.horas,
+      labels: this.hours,
       datasets: [
         {
           label: 'Ambiente Externo [°C]',
@@ -173,7 +154,7 @@ export class DashboardComponent implements OnInit {
   setupBarGraph() {
 
     this.barChartData = {
-      labels: this.horas,
+      labels: this.hours,
       datasets: [
         {
           label: 'Diferencial de Temperaturas',
@@ -222,10 +203,10 @@ export class DashboardComponent implements OnInit {
     return yAxis;
   }
 
-  private getConsumptions(data): any[] {
+  private getPowers(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[i].consumption);
+      yAxis.push(data[i].current * 220);
     }
     return yAxis;
   }
@@ -239,7 +220,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.consumptionCoef > 200) {
+    if (this.effortCoef > 200) {
       return true;
     }
     return false;
