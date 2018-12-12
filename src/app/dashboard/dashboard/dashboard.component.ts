@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import 'rxjs/Rx';
 
-// import { ExportToCSV } from '@molteni/export-csv';
-
 import { DashboardService } from './../dashboard.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 
@@ -105,7 +103,6 @@ export class DashboardComponent implements OnInit {
     this.effortCoef = parseFloat((this.effortCoef).toFixed(2));
 
     console.log(`Effort Coef.: ${this.effortCoef}`);
-    // console .log(`Avg Delta Temp: ${averageDeltaTemp}`);
     // console.log(date.toTimeString());
   }
 
