@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public getAnomaly(): boolean {
-    if (this.effortCoef > 200) {
+    if (this.effortCoef > 45) {
       return true;
     }
     return false;
