@@ -94,12 +94,12 @@ export class DashboardComponent implements OnInit {
 
     for (let i = 0; i < n; i++) {
       averagePower += this.powers[i];
-      averageDeltaTemp += this.deltaTemps[i];
+      averageDeltaTemp += Math.abs(this.deltaTemps[i]);
     }
     averagePower /= n;
     averageDeltaTemp /= n;
 
-    this.effortCoef = averagePower / (Math.abs(averageDeltaTemp) + 1);
+    this.effortCoef = averagePower / (averageDeltaTemp + 1);
     this.effortCoef = parseFloat((this.effortCoef).toFixed(2));
 
     console.log(`Effort Coef.: ${this.effortCoef}`);
