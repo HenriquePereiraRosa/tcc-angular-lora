@@ -53,7 +53,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.getAndHandleData();
-
     setInterval(() => this.getAndHandleData(), this.interval);
   }
 
