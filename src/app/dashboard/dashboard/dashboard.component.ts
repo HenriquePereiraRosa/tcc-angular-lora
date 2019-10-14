@@ -171,7 +171,7 @@ export class DashboardComponent implements OnInit {
   private getHours(data) {
     const hours: string[] = [];
     for (let i = 0; i < data.length; i++) {
-      hours.push(data[i].date.substr(11, 5));
+      hours.push(data[i].date.substr(1, 10));
     }
     return hours;
   }
