@@ -62,31 +62,21 @@ export class Lancamento {
 }
 
 export class Sensor {
-  dev_eui: string;
-  vBat: number;
   current: number;
-  envTemp: number;
+  voltage: number;
   temperature: number;
-  deltaTemp: number;
   humidity: number;
-  anomaly: boolean;
-  date: string;
+  date: String;
 
   constructor(
-    dev_eui: string,
-    vBat: number,
     current: number,
-    envTemp: number,
+    voltage: number,
     temperature: number,
-    deltaTemp: number,
     humidity: number,
-    date: string) {
-      this.dev_eui = dev_eui;
-      this.vBat = vBat;
+    date: String) {
       this.current = current;
-      this.envTemp = envTemp;
+      this.voltage = voltage;
       this.temperature = temperature;
-      this.deltaTemp = deltaTemp;
       this.humidity = humidity;
       this.date = date;
     }

@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
   powers: any[];
   envTemps: any[];
   sensorTemps: any[];
-  deltaTemps: any[];
-  effortCoef: number;
+  power: number;
+  anomaly: Boolean;
 
   interval = 150000;
   sensor: Sensor;
@@ -47,8 +47,8 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private errorHandler: ErrorHandlerService,
     private decimalPipe: DecimalPipe) {
-    this.requestNumber = 40;
-    this.effortCoef = 0;
+    this.power = 0;
+    this.anomaly = false;
   }
 
   ngOnInit() {
@@ -61,48 +61,25 @@ export class DashboardComponent implements OnInit {
   }
 
   getAndHandleData() {
-    this.dashboardService.getDataFromMauaServer(this.requestNumber)
+    this.dashboardService.getDataFromServer()
       .then(response => {
         this.sensors = response;
         this.updateLocalVars(this.sensors);
         this.setupLineGraph();
         this.setupLineGraph2();
         this.setupBarGraph();
-        this.calcEffortCoef();
       }).catch(erro => this.errorHandler.handle(erro));
   }
 
 
   updateLocalVars(response) {
     this.sensor = response[response.length - 1];
+    this.power = this.sensor.voltage * this.sensor.current;
     this.hours = this.getHours(response);
     this.currents = this.getCurrents(response);
     this.powers = this.getPowers(response);
-    this.envTemps = this.getEnvTemps(response);
     this.sensorTemps = this.getSensorTemps(response);
-    this.deltaTemps = this.getDeltaTemps(response);
-    this.calcEffortCoef();
-  }
-
-  calcEffortCoef() {
-    this.effortCoef = 0;
-    let averageDeltaTemp = 0;
-    let averagePower = 0;
-    const n = this.powers.length;
-    const date = new Date;
-
-    for (let i = 0; i < n; i++) {
-      averagePower += this.powers[i];
-      averageDeltaTemp += Math.abs(this.deltaTemps[i]);
-    }
-    averagePower /= n;
-    averageDeltaTemp /= n;
-
-    this.effortCoef = averagePower / (averageDeltaTemp + 1);
-    this.effortCoef = parseFloat((this.effortCoef).toFixed(2));
-
-    console.log(`Effort Coef.: ${this.effortCoef}`);
-    // console.log(date.toTimeString());
+    this.anomaly = !this.anomaly;
   }
 
   private setupLineGraph() {
@@ -156,7 +133,7 @@ export class DashboardComponent implements OnInit {
           label: 'Diferencial de Temperaturas',
           backgroundColor: '#42A5F5',
           borderColor: '#1E88E5',
-          data: this.deltaTemps
+          data: this.powers
           // },
           // {
           //   label: 'Consumo de Energia / Delta Temperatura [W/°C]',
@@ -170,15 +147,7 @@ export class DashboardComponent implements OnInit {
   private getCurrents(data): any[] {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
-      yAxis.push(parseFloat(data[i].current.toFixed(3)));
-    }
-    return yAxis;
-  }
-
-  private getEnvTemps(data): any[] {
-    const yAxis: any[] = [];
-    for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[i].envTemp);
+      yAxis.push(data[i].current.toFixed(3));
     }
     return yAxis;
   }
@@ -187,14 +156,6 @@ export class DashboardComponent implements OnInit {
     const yAxis: any[] = [];
     for (let i = 0; i < data.length; i++) {
       yAxis.push(data[i].temperature);
-    }
-    return yAxis;
-  }
-
-  private getDeltaTemps(data): any[] {
-    const yAxis: any[] = [];
-    for (let i = 0; i < data.length; i++) {
-      yAxis.push(data[i].deltaTemp);
     }
     return yAxis;
   }
@@ -215,13 +176,6 @@ export class DashboardComponent implements OnInit {
     return hours;
   }
 
-  public getAnomaly(): boolean {
-    if (this.effortCoef > 45) {
-      return true;
-    }
-    return false;
-  }
-
   handleClick(event) {
     const csvData = this.ConvertToCSV(this.sensors);
     const blob = new Blob([csvData], { type: 'application/octet-stream' });
@@ -234,6 +188,11 @@ export class DashboardComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+  }
+
+  getAnomaly():Boolean {
+    return this.anomaly;
+
   }
 
   ConvertToCSV(objArray: any): string {

@@ -13,7 +13,7 @@
           <h4>Corrente: {{sensor?.current}}A</h4>
         </div>
         <div class="margin-2 border height-50">
-          <h5>Coef. Esforço: <br> {{effortCoef}} W/°C</h5>
+          <h5>Consumo: <br> {{power}} W</h5>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="margin-2 border height-30 align-center">
-          Bateria: {{sensor?.vBat}}V
+          Bateria: {{sensor?.voltage}}V
         </div>
       </div>
     </div>
@@ -45,12 +45,6 @@
 
     <div class="p-col-12 p-md-12">
       <div class="border space">
-        <div>
-          <h4>Valores no eixo X: {{requestNumber}}</h4>
-        </div>
-        <div>
-          <p-slider [(ngModel)]="requestNumber" (onSlideEnd)="handleChange($event)" [step]="20" [min]="10" [max]="500"></p-slider>
-        </div>
         <div style="margin: 1em">
           <p-spinner style="max-width: 350px; margin: auto" [(ngModel)]="requestNumber" (onChange)="handleChange($event)"
             [step]="20" [min]="1"></p-spinner>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import 'rxjs/operator/toPromise';
-import * as moment from 'moment';
 
 import { environment } from './../../environments/environment';
 import { ApiHttp } from '../seguranca/api-http';
@@ -11,9 +10,7 @@ import { Sensor } from '../core/model';
 export class DashboardService {
 
   lancamentosUrl: string;
-  nodeUrl = 'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
-  nodeEuiUrl = '/0004a30b001e8b8e';
-  nodeEnvTempEuiURL = '/0004a30b001eb809';
+  nodeUrl = 'https://iotserver8.herokuapp.com/dummydata' //'https://networkserver.maua.br/api/index.php/2b7e151628aed2a6abf7158809cf4f3c/';
   sensors: Sensor[];
   sensor: Sensor;
   number
@@ -24,75 +21,37 @@ export class DashboardService {
   }
 
 
-  getDataFromMauaServer(requestNumber: number): Promise<any> {
-    return this.http.get<any>(`${this.nodeUrl}${requestNumber}${this.nodeEnvTempEuiURL}`)
+  getDataFromServer(): Promise<any> {
+    return this.http.get<any>(`${this.nodeUrl}`)
       .toPromise()
       .then(response => {
-        const dados = response;
-        return this.handleData(dados, requestNumber);
+        return this.handleData(response);
       });
   }
 
 
-  handleData(response, requestNumber): any {
-    return this.http.get<any>(`${this.nodeUrl}${requestNumber}${this.nodeEuiUrl}`)
-      .toPromise()
-      .then(responseArray => {
-        const dataAux = responseArray;
-        this.sensors = [];
-        let current = 0;
-        let temperature = 0;
-        const environmentTemp = this.handleEnvironmentTemp(response);
-        let humidity = 0;
-        let vBat = 0;
-        let date = '';
+  handleData(response): any {
 
-        let counter = 0;
+    this.sensors = [];
 
-        for (let i = 0; i < dataAux.logs.length; i++) {
+    let counter = 0;
 
-          const envTempItem = environmentTemp[counter];
+    console.log(response);
 
-          current = parseInt(dataAux.logs[ i ].data_payload.substring(2, 6), 16);
-          // current -= 2;
-          current = (current / (1.9 / (3.3 / 1024)));
-          current = parseFloat(current.toFixed(2));
+    for (let i = 0; i < response.length; i++) {
 
-          temperature = parseInt(dataAux.logs[ i ].data_payload.substring(8, 12), 16) / 10;
+      let current = parseFloat(response[i].current);
+      let voltage = parseFloat(response[i].voltage);
+      let temperature = parseInt(response[i].temperature);
+      let humidity = parseInt(response[i].humidity);
+      let date = JSON.stringify(response[i].dateTime);
 
-          humidity = parseInt(dataAux.logs[ i ].data_payload.substring(14, 18), 16) / 10;
-
-          vBat = parseInt(dataAux.logs[ i ].data_payload.substring(20, 24), 16) / 1000;
-
-          date = dataAux.logs[ i ].created_at;
-
-          const deltaTemp = envTempItem - temperature;
-
-          this.sensor = new Sensor(
-            dataAux.logs[ i ].dev_eui, vBat, current, envTempItem, temperature, deltaTemp,
-            humidity, date);
-
-          this.sensors.push(this.sensor);
-
-          counter++;
-        }
-
-        this.sensors = this.sensors.reverse();
-        //  console.log(`Sensors: `);
-        //  console.log(this.sensors);
-
-        return this.sensors;
-      });
-  }
-
-  handleEnvironmentTemp(data: any): any {
-    const array: any[] = [];
-    for (let i = 0; i < data.logs.length; i++) {
-      const environmentTemp = parseInt(data.logs[ i ].data_payload.substring(2, 6), 16) / 10;
-      array.push(environmentTemp);
+      this.sensor = new Sensor(current, voltage, temperature, humidity, date);
+      this.sensors.push(this.sensor);
+      counter++;
     }
-    return array;
+    this.sensors = this.sensors.reverse();
+    return this.sensors;
   }
-
 
 } // end Class
